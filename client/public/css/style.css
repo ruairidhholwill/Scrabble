@@ -22,10 +22,18 @@
     background-color: red;
 }
 
+.triple:before {
+    content: "TW";
+}
+
 .double {
     width: 50px;
     height: 50px;
     background-color: lightsalmon;
+}
+
+.double:before {
+    content: "DW";
 }
 
 .double_letter {
@@ -34,8 +42,16 @@
     background-color: lightblue;
 }
 
+.double_letter:before {
+    content: "DL";
+}
+
 .triple_letter {
     width: 50px;
     height: 50px;
     background-color: blue;
+}
+
+.triple_letter:before {
+    content: "TL";
 }
