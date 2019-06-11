@@ -14,13 +14,13 @@
 .tile {
     width: 50px;
     height: 50px;
-    background-color: green;
+    background-color: rgb(45, 102, 49);
 }
 
 .triple {
     width: 50px;
     height: 50px;
-    background-color: red;
+    background-color: rgb(249, 38, 53);
 }
 
 /* .triple:before {
@@ -30,7 +30,7 @@
 .double {
     width: 50px;
     height: 50px;
-    background-color: lightsalmon;
+    background-color: rgb(252, 216, 89);
 }
 
 /* .double:before {
@@ -40,7 +40,7 @@
 .double_letter {
     width: 50px;
     height: 50px;
-    background-color: lightblue;
+    background-color: rgb(190, 219, 254);
 }
 
 /* .double_letter:before {
@@ -50,7 +50,7 @@
 .triple_letter {
     width: 50px;
     height: 50px;
-    background-color: blue;
+    background-color: rgb(17, 140, 233);
 }
 
 /* .triple_letter:before {
