@@ -16,18 +16,19 @@ Bag.prototype.getData = function(){
 }
 
 Bag.prototype.randomTiles = function() {
-    var ctr = this.tilesInBag.length, temp, index;
-    while (ctr > 0) {
-        index = Math.floor(Math.random() * ctr);
-        ctr--;
-        temp = this.tilesInBag[ctr];
-        this.tilesInBag[ctr] = this.tilesInBag[index];
+    var counter = this.tilesInBag.length, temp, index;
+    while (counter > 0) {
+        index = Math.floor(Math.random() * counter);
+        counter--;
+        temp = this.tilesInBag[counter];
+        this.tilesInBag[counter] = this.tilesInBag[index];
         this.tilesInBag[index] = temp;
     }
-    console.log(this.tilesInBag);
-    return this.tilesInBag;
-    
+    PubSub.publish('Bag:random-tiles', this.tilesInBag)
+    return this.tilesInBag;   
 }
+
+
 
 
 module.exports = Bag
