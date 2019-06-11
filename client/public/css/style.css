@@ -22,9 +22,9 @@
     background-color: red;
 }
 
-.triple:before {
+/* .triple:before {
     content: "TW";
-}
+} */
 
 .double {
     width: 50px;
@@ -32,9 +32,9 @@
     background-color: lightsalmon;
 }
 
-.double:before {
+/* .double:before {
     content: "DW";
-}
+} */
 
 .double_letter {
     width: 50px;
@@ -42,9 +42,9 @@
     background-color: lightblue;
 }
 
-.double_letter:before {
+/* .double_letter:before {
     content: "DL";
-}
+} */
 
 .triple_letter {
     width: 50px;
@@ -52,6 +52,27 @@
     background-color: blue;
 }
 
-.triple_letter:before {
+/* .triple_letter:before {
     content: "TL";
+} */
+
+.hovered {
+    background: lightgrey;
+}
+
+#letters {
+    display: flex;
+    flex-direction: row;
+}
+
+#dragable_letter {
+    border: 3px solid grey;
+    border-radius: 5px;
+    width: 43px;
+    height: 32px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    margin-bottom: 0;
+    margin-left: 1px;
+    background-color: ivory;
 }

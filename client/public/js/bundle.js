@@ -93,7 +93,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const Bag = __webpack_require__(/*! ./models/bag.js */ \"./client/src/models/bag.js\")\nconst Player = __webpack_require__(/*! ./models/player.js */ \"./client/src/models/player.js\")\n\ndocument.addEventListener('DOMContentLoaded', () => {\n\n    const player = new Player(name)\n    player.bindEvents();\n\n    const url = 'http://localhost:3000/api/scrabble';\n    const bag = new Bag(url);\n    bag.getData();\n    // bag.bindEvents();\n})\n\n\n\n\n\n\n//# sourceURL=webpack:///./client/src/app.js?");
+eval("const Bag = __webpack_require__(/*! ./models/bag.js */ \"./client/src/models/bag.js\")\nconst Player = __webpack_require__(/*! ./models/player.js */ \"./client/src/models/player.js\")\nconst Board = __webpack_require__(/*! ./models/board.js */ \"./client/src/models/board.js\")\n\ndocument.addEventListener('DOMContentLoaded', () => {\n\n    const dragElement = document.getElementById(\"#dragable_letter\")\n    const board = new Board(dragElement)\n    board.bindEvents();\n\n\n    const player = new Player(name)\n    player.bindEvents();\n\n    const url = 'http://localhost:3000/api/scrabble';\n    const bag = new Bag(url);\n    bag.getData();\n    // bag.bindEvents();\n})\n\n\n\n\n\n\n//# sourceURL=webpack:///./client/src/app.js?");
 
 /***/ }),
 
@@ -127,6 +127,17 @@ eval("const RequestHelper = function (url) {\n  this.url = url;\n};\n\nRequestHe
 /***/ (function(module, exports, __webpack_require__) {
 
 eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./client/src/helpers/pub_sub.js\")\nconst RequestHelper = __webpack_require__(/*! ../helpers/request_helper.js */ \"./client/src/helpers/request_helper.js\")\n\nconst Bag = function(url) {\n    this.url = url;\n    this.tilesInBag = [];\n}\n\nBag.prototype.getData = function(){\n    const tiles = new RequestHelper(this.url)\n    tiles.get()\n        .then((tileData) => {\n            this.tilesInBag = tileData\n        this.randomTiles();\n        })\n}\n\nBag.prototype.randomTiles = function() {\n    var counter = this.tilesInBag.length, temp, index;\n    while (counter > 0) {\n        index = Math.floor(Math.random() * counter);\n        counter--;\n        temp = this.tilesInBag[counter];\n        this.tilesInBag[counter] = this.tilesInBag[index];\n        this.tilesInBag[index] = temp;\n    }\n    PubSub.publish('Bag:random-tiles', this.tilesInBag)\n    return this.tilesInBag;   \n}\n\n\n\n\nmodule.exports = Bag\n\n//# sourceURL=webpack:///./client/src/models/bag.js?");
+
+/***/ }),
+
+/***/ "./client/src/models/board.js":
+/*!************************************!*\
+  !*** ./client/src/models/board.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("const Board = function(element){\n    this.element = element\n}\n\nBoard.prototype.bindEvents = function(){\n//     document.addEventListener(\"drag\", (event) => {\n//     console.log(event)\n// })\n//     document.addEventListener(\"dragend\", (event) => {\n//     console.log(\"bye\")\n// })\n\ndocument.addEventListener(\"drag\", function(event) {\n    event.target.style.visibility = \"hidden\";\n  }, 1);\n\ndocument.addEventListener(\"dragstart\", function(event) {\n  dragged = event.target;\n  console.log(event.target)\n}, false);\n\ndocument.addEventListener(\"dragend\", function(event) {\n    event.target.style.visibility = \"\";\n  }, 1);\n  \n\n/* events fired on the drop targets */\ndocument.addEventListener(\"dragover\", function(event) {\n  // prevent default to allow drop\n  event.preventDefault();\n}, false);\n\ndocument.addEventListener(\"dragenter\", function(event) {\n    console.log(event.target)\n    if (event.target.className == 'triple'){\n        event.target.style.opacity = 0.5;\n    } else if (event.target.className == 'double') {\n        event.target.style.opacity = 0.5;\n    } else if (event.target.className == 'double_letter') {\n        event.target.style.opacity = 0.5;\n    } else if (event.target.className == 'triple_letter') {\n        event.target.style.opacity = 0.5;\n    } else if (event.target.className == 'tile') {\n        event.target.style.opacity = 0.5;\n    }\n\n\n}, false);\n\ndocument.addEventListener(\"dragleave\", function(event) {\n    event.target.style.opacity = ''\n})\n\n\ndocument.addEventListener(\"drop\", function(event) {\n\n  event.preventDefault();\n  event.target.style.opacity = ''\n//COULD MAKE EVENT (CELL) USED MULTIPLIER FALSE\n\nif (event.target.className == \"triple\") {\n    event.target.innerHTML = ''\n    event.target.appendChild( dragged );\n\n  } else if (event.target.className == \"double\") {\n    event.target.innerHTML = ''\n    event.target.appendChild( dragged );\n\n  } else if (event.target.className == \"triple_letter\") {\n    event.target.innerHTML = ''\n    event.target.appendChild( dragged );\n\n  } else if (event.target.className == \"double_letter\") {\n    event.target.innerHTML = ''\n    event.target.appendChild( dragged );\n    \n  } else if (event.target.className == \"tile\") {\n    event.target.appendChild( dragged );\n}\n})\n\n}\n\nmodule.exports = Board\n\n//# sourceURL=webpack:///./client/src/models/board.js?");
 
 /***/ }),
 
