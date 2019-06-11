@@ -12,7 +12,6 @@ Player.prototype.bindEvents = function (){
         for (i = 0; i < 7; i++) {
             (this.tileRack.push(randomTiles[i]))
         }
-        console.log(this.tileRack)
     })
 }
 
