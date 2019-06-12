@@ -4,7 +4,6 @@ const Tile = require('./models/tile.js')
 const Word = require('./models/word.js');
 const TileRackView = require('./views/tile_rack_view.js');
 const Board = require('./models/board.js')
-const Word = require('./models/word.js')
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -26,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const wordUrl = 'http://localhost:3000/api/scrabblewords';
     const word = new Word(wordUrl);
+    word.bindEvents()
     // word.getWords();
 })
 

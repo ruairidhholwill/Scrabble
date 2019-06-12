@@ -1,3 +1,5 @@
+const PubSub = require('../helpers/pub_sub.js')
+
 const Tile = function(element){
     this.element = element
 }
@@ -69,6 +71,8 @@ if (event.target.className == "triple") {
   } else if (event.target.className == "tile") {
     event.target.appendChild( dragged );
 }
+PubSub.publish('Tile:letter-placed', dragged.innerHTML)
+PubSub.publish('Tile:letter-index', dragged.offsetParent.cellIndex)
 })
 
 }
