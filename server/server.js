@@ -14,11 +14,11 @@ MongoClient.connect('mongodb://localhost:27017')
   .then((client) => {
     const db = client.db('scrabble')
     const tileCollection = db.collection('tiles')
-    // const goalCollection = db.collection('target')
+    const wordCollection = db.collection('words')
     const tileRouter = createRouter(tileCollection)
-    // const goalRouter = createRouter(goalCollection)
+    const wordRouter = createRouter(wordCollection)
     app.use('/api/scrabble', tileRouter);
-    // app.use('/api/target', goalRouter);
+    app.use('/api/scrabblewords', wordRouter);
   })
   .catch(console.error);
 

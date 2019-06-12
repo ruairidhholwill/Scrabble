@@ -1,6 +1,10 @@
 const Bag = require('./models/bag.js')
 const Player = require('./models/player.js')
+<<<<<<< HEAD
 const Board = require('./models/board.js')
+=======
+const Word = require('./models/word.js');
+>>>>>>> develop
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -16,6 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const bag = new Bag(url);
     bag.getData();
     // bag.bindEvents();
+
+    const wordUrl = 'http://localhost:3000/api/scrabblewords';
+    const word = new Word(wordUrl);
+    word.getWords();
 })
 
 
