@@ -3,12 +3,6 @@ const Board = function(element){
 }
 
 Board.prototype.bindEvents = function(){
-//     document.addEventListener("drag", (event) => {
-//     console.log(event)
-// })
-//     document.addEventListener("dragend", (event) => {
-//     console.log("bye")
-// })
 
 document.addEventListener("drag", function(event) {
     event.target.style.visibility = "hidden";
@@ -23,14 +17,13 @@ document.addEventListener("dragend", function(event) {
     event.target.style.visibility = "";
   }, 1);
   
-
-/* events fired on the drop targets */
 document.addEventListener("dragover", function(event) {
   // prevent default to allow drop
   event.preventDefault();
 }, false);
 
 document.addEventListener("dragenter", function(event) {
+    
     console.log(event.target)
     if (event.target.className == 'triple'){
         event.target.style.opacity = 0.5;
@@ -43,7 +36,6 @@ document.addEventListener("dragenter", function(event) {
     } else if (event.target.className == 'tile') {
         event.target.style.opacity = 0.5;
     }
-
 
 }, false);
 
@@ -60,20 +52,20 @@ document.addEventListener("drop", function(event) {
 
 if (event.target.className == "triple") {
     event.target.innerHTML = ''
+    // dragged.parentNode.removeChild( dragged );
     event.target.appendChild( dragged );
-
   } else if (event.target.className == "double") {
     event.target.innerHTML = ''
+    // dragged.parentNode.removeChild( dragged );
     event.target.appendChild( dragged );
-
   } else if (event.target.className == "triple_letter") {
     event.target.innerHTML = ''
+    // dragged.parentNode.removeChild( dragged );
     event.target.appendChild( dragged );
-
   } else if (event.target.className == "double_letter") {
     event.target.innerHTML = ''
+    // dragged.parentNode.removeChild( dragged );
     event.target.appendChild( dragged );
-    
   } else if (event.target.className == "tile") {
     event.target.appendChild( dragged );
 }
