@@ -13,13 +13,21 @@ const createRouter = function(collection){
            .catch(console.error)
    })
 
-   router.get('/:id', (req, res) => {
-       const id = req.params.id;
-       collection
-           .findOne( {_id: ObjectID(id)} )
-           .then((doc)=> res.json(doc))
-           .catch(console.error)
-   })
+  //  router.get('/:id', (req, res) => {
+  //      const id = req.params.id;
+  //      collection
+  //          .findOne( {_id: ObjectID(id)} )
+  //          .then((doc)=> res.json(doc))
+  //          .catch(console.error)
+  //  })
+
+   router.post('/:word', (req, res) => {
+    const word = req.params.word;
+    collection
+        .findOne( {word: (word)} )
+        .then((doc)=> res.json(doc))
+        .catch(console.error)
+})
 
    router.post('/', (req,res) => {
        const newData = req.body;
@@ -29,6 +37,8 @@ const createRouter = function(collection){
            .then((docs) => res.json(docs))
            .catch(console.error)
    })
+
+   
 
    router.delete('/:id', (req,res) => {
        const id = req.params.id;

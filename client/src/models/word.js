@@ -5,10 +5,10 @@ const Word = function(url){
     this.request = new RequestHelper(this.url);
 }
 
-// const word = "home"
+const word = "home"
 
 Word.prototype.getWords = function(){
-    this.request.post()
+    this.request.post(word)
         .then( (outcome) => {
             console.log("Hello", outcome);
         })

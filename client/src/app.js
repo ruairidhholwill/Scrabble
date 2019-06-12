@@ -1,14 +1,18 @@
 const Bag = require('./models/bag.js')
 const Player = require('./models/player.js')
-const Board = require('./models/board.js')
+const Tile = require('./models/tile.js')
 const Word = require('./models/word.js');
+const TileRackView = require('./views/tile_rack_view.js');
 
 document.addEventListener('DOMContentLoaded', () => {
 
     const dragElement = document.getElementById("#dragable_letter")
-    const board = new Board(dragElement)
-    board.bindEvents();
+    const tile = new Tile(dragElement)
+    tile.bindEvents();
 
+    const tileRackElement = document.querySelector("#tile_rack")
+    const tileRackView = new TileRackView(tileRackElement);
+    tileRackView.bindEvents();
 
     const player = new Player(name)
     player.bindEvents();
