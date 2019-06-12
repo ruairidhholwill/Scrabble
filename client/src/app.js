@@ -1,10 +1,7 @@
 const Bag = require('./models/bag.js')
 const Player = require('./models/player.js')
-<<<<<<< HEAD
 const Board = require('./models/board.js')
-=======
 const Word = require('./models/word.js');
->>>>>>> develop
 
 document.addEventListener('DOMContentLoaded', () => {
 
