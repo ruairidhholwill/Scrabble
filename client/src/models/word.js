@@ -15,7 +15,4 @@ Word.prototype.getWords = function(){
 }
 
 
-
-
-
 module.exports = Word;
