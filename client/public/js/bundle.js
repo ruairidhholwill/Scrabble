@@ -91,9 +91,75 @@
   !*** ./client/src/app.js ***!
   \***************************/
 /*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const Bag = __webpack_require__(/*! ./models/bag.js */ \"./client/src/models/bag.js\")\nconst Player = __webpack_require__(/*! ./models/player.js */ \"./client/src/models/player.js\")\nconst Board = __webpack_require__(/*! ./models/board.js */ \"./client/src/models/board.js\")\nconst Word = __webpack_require__(/*! ./models/word.js */ \"./client/src/models/word.js\");\n\ndocument.addEventListener('DOMContentLoaded', () => {\n\n    const dragElement = document.getElementById(\"#dragable_letter\")\n    const board = new Board(dragElement)\n    board.bindEvents();\n\n\n    const player = new Player(name)\n    player.bindEvents();\n\n    const url = 'http://localhost:3000/api/scrabble';\n    const bag = new Bag(url);\n    bag.getData();\n    // bag.bindEvents();\n\n    const wordUrl = 'http://localhost:3000/api/scrabblewords';\n    const word = new Word(wordUrl);\n    word.getWords();\n})\n\n\n\n\n\n\n//# sourceURL=webpack:///./client/src/app.js?");
+
+/***/ }),
+
+/***/ "./client/src/helpers/pub_sub.js":
+/*!***************************************!*\
+  !*** ./client/src/helpers/pub_sub.js ***!
+  \***************************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("throw new Error(\"Module parse failed: Unexpected token (3:2)\\nYou may need an appropriate loader to handle this file type.\\n| const Bag = require('./models/bag.js')\\n| const Player = require('./models/player.js')\\n> <<<<<<< HEAD\\n| const Board = require('./models/board.js')\\n| =======\");\n\n//# sourceURL=webpack:///./client/src/app.js?");
+eval("const PubSub = {\n\n    publish: function(channel, payload) {\n        console.log(`published on ${channel} payload: ${payload}`)\n        const event = new CustomEvent(channel, {\n            detail: payload\n        });\n        document.dispatchEvent(event);\n    }, \n    subscribe: function(channel, callback) {\n        console.log(`subscribed to ${channel}`)\n        document.addEventListener(channel, callback)\n    }\n\n}\n\nmodule.exports = PubSub;\n\n//# sourceURL=webpack:///./client/src/helpers/pub_sub.js?");
+
+/***/ }),
+
+/***/ "./client/src/helpers/request_helper.js":
+/*!**********************************************!*\
+  !*** ./client/src/helpers/request_helper.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("const RequestHelper = function (url) {\n  this.url = url;\n};\n\nRequestHelper.prototype.get = function () {\n  return fetch(this.url)\n    .then(response => response.json())\n    .catch(error => console.log(\"Error in get:\", error))\n};\n\nRequestHelper.prototype.post = function(payload){\n  return fetch(this.url, {\n    method: 'POST',\n    body: JSON.stringify(payload),\n    headers: {'Content-Type': 'application/json'}\n  })\n    .then(response => response.json())\n    .catch(console.error)\n}\n\nmodule.exports = RequestHelper;\n\n\n//# sourceURL=webpack:///./client/src/helpers/request_helper.js?");
+
+/***/ }),
+
+/***/ "./client/src/models/bag.js":
+/*!**********************************!*\
+  !*** ./client/src/models/bag.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./client/src/helpers/pub_sub.js\")\nconst RequestHelper = __webpack_require__(/*! ../helpers/request_helper.js */ \"./client/src/helpers/request_helper.js\")\n\nconst Bag = function(url) {\n    this.url = url;\n    this.tilesInBag = [];\n}\n\nBag.prototype.getData = function(){\n    const tiles = new RequestHelper(this.url)\n    tiles.get()\n        .then((tileData) => {\n            this.tilesInBag = tileData\n        this.randomTiles();\n        })\n}\n\nBag.prototype.randomTiles = function() {\n    var counter = this.tilesInBag.length, temp, index;\n    while (counter > 0) {\n        index = Math.floor(Math.random() * counter);\n        counter--;\n        temp = this.tilesInBag[counter];\n        this.tilesInBag[counter] = this.tilesInBag[index];\n        this.tilesInBag[index] = temp;\n    }\n    PubSub.publish('Bag:random-tiles', this.tilesInBag)\n    return this.tilesInBag;   \n}\n\n\n\n\nmodule.exports = Bag\n\n//# sourceURL=webpack:///./client/src/models/bag.js?");
+
+/***/ }),
+
+/***/ "./client/src/models/board.js":
+/*!************************************!*\
+  !*** ./client/src/models/board.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("const Board = function(element){\n    this.element = element\n}\n\nBoard.prototype.bindEvents = function(){\n\ndocument.addEventListener(\"drag\", function(event) {\n    event.target.style.visibility = \"hidden\";\n  }, 1);\n\ndocument.addEventListener(\"dragstart\", function(event) {\n  dragged = event.target;\n  console.log(event.target)\n}, false);\n\ndocument.addEventListener(\"dragend\", function(event) {\n    event.target.style.visibility = \"\";\n  }, 1);\n  \ndocument.addEventListener(\"dragover\", function(event) {\n  // prevent default to allow drop\n  event.preventDefault();\n}, false);\n\ndocument.addEventListener(\"dragenter\", function(event) {\n    \n    console.log(event.target)\n    if (event.target.className == 'triple'){\n        event.target.style.opacity = 0.5;\n    } else if (event.target.className == 'double') {\n        event.target.style.opacity = 0.5;\n    } else if (event.target.className == 'double_letter') {\n        event.target.style.opacity = 0.5;\n    } else if (event.target.className == 'triple_letter') {\n        event.target.style.opacity = 0.5;\n    } else if (event.target.className == 'tile') {\n        event.target.style.opacity = 0.5;\n    }\n\n}, false);\n\ndocument.addEventListener(\"dragleave\", function(event) {\n    event.target.style.opacity = ''\n})\n\n\ndocument.addEventListener(\"drop\", function(event) {\n\n  event.preventDefault();\n  event.target.style.opacity = ''\n//COULD MAKE EVENT (CELL) USED MULTIPLIER FALSE\n\nif (event.target.className == \"triple\") {\n    event.target.innerHTML = ''\n    // dragged.parentNode.removeChild( dragged );\n    event.target.appendChild( dragged );\n  } else if (event.target.className == \"double\") {\n    event.target.innerHTML = ''\n    // dragged.parentNode.removeChild( dragged );\n    event.target.appendChild( dragged );\n  } else if (event.target.className == \"triple_letter\") {\n    event.target.innerHTML = ''\n    // dragged.parentNode.removeChild( dragged );\n    event.target.appendChild( dragged );\n  } else if (event.target.className == \"double_letter\") {\n    event.target.innerHTML = ''\n    // dragged.parentNode.removeChild( dragged );\n    event.target.appendChild( dragged );\n  } else if (event.target.className == \"tile\") {\n    event.target.appendChild( dragged );\n}\n})\n\n}\n\nmodule.exports = Board\n\n//# sourceURL=webpack:///./client/src/models/board.js?");
+
+/***/ }),
+
+/***/ "./client/src/models/player.js":
+/*!*************************************!*\
+  !*** ./client/src/models/player.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./client/src/helpers/pub_sub.js\")\n\nconst Player = function(name){\n    this.name = name\n    this.score = 0\n    this.tileRack = []\n}\n\nPlayer.prototype.bindEvents = function (){\n    PubSub.subscribe('Bag:random-tiles', (event) =>{\n        const randomTiles = event.detail\n        for (i = 0; i < 7; i++) {\n            (this.tileRack.push(randomTiles[i]))\n        }\n    })\n}\n\n\n\n\nmodule.exports = Player;\n\n//# sourceURL=webpack:///./client/src/models/player.js?");
+
+/***/ }),
+
+/***/ "./client/src/models/word.js":
+/*!***********************************!*\
+  !*** ./client/src/models/word.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const RequestHelper = __webpack_require__(/*! ../helpers/request_helper.js */ \"./client/src/helpers/request_helper.js\");\n\nconst Word = function(url){\n    this.url = url;\n    this.request = new RequestHelper(this.url);\n}\n\n// const word = \"home\"\n\nWord.prototype.getWords = function(){\n    this.request.post()\n        .then( (outcome) => {\n            console.log(\"Hello\", outcome);\n        })\n}\n\n\n\n\n\nmodule.exports = Word;\n\n//# sourceURL=webpack:///./client/src/models/word.js?");
 
 /***/ })
 
