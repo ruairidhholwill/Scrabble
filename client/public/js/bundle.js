@@ -93,7 +93,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const Bag = __webpack_require__(/*! ./models/bag.js */ \"./client/src/models/bag.js\")\nconst Player = __webpack_require__(/*! ./models/player.js */ \"./client/src/models/player.js\")\nconst Board = __webpack_require__(/*! ./models/board.js */ \"./client/src/models/board.js\")\nconst Word = __webpack_require__(/*! ./models/word.js */ \"./client/src/models/word.js\");\n\ndocument.addEventListener('DOMContentLoaded', () => {\n\n    const dragElement = document.getElementById(\"#dragable_letter\")\n    const board = new Board(dragElement)\n    board.bindEvents();\n\n\n    const player = new Player(name)\n    player.bindEvents();\n\n    const url = 'http://localhost:3000/api/scrabble';\n    const bag = new Bag(url);\n    bag.getData();\n    // bag.bindEvents();\n\n    const wordUrl = 'http://localhost:3000/api/scrabblewords';\n    const word = new Word(wordUrl);\n    word.getWords();\n})\n\n\n\n\n\n\n//# sourceURL=webpack:///./client/src/app.js?");
+eval("const Bag = __webpack_require__(/*! ./models/bag.js */ \"./client/src/models/bag.js\")\nconst Player = __webpack_require__(/*! ./models/player.js */ \"./client/src/models/player.js\")\nconst Board = __webpack_require__(/*! ./models/board.js */ \"./client/src/models/board.js\")\nconst Word = __webpack_require__(/*! ./models/word.js */ \"./client/src/models/word.js\");\n\ndocument.addEventListener('DOMContentLoaded', () => {\n\n    const dragElement = document.getElementById(\"#dragable_letter\")\n    const board = new Board(dragElement)\n    board.bindEvents();\n\n\n    const player = new Player(name)\n    player.bindEvents();\n\n    const url = 'http://localhost:3000/api/scrabble';\n    const bag = new Bag(url);\n    bag.getData();\n    // bag.bindEvents();\n\n    const wordUrl = 'http://localhost:3000/api/scrabblewords';\n    const word = new Word(wordUrl);\n    // word.getWords();\n})\n\n\n\n\n\n\n//# sourceURL=webpack:///./client/src/app.js?");
 
 /***/ }),
 
@@ -159,7 +159,7 @@ eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./client
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const RequestHelper = __webpack_require__(/*! ../helpers/request_helper.js */ \"./client/src/helpers/request_helper.js\");\n\nconst Word = function(url){\n    this.url = url;\n    this.request = new RequestHelper(this.url);\n}\n\n// const word = \"home\"\n\nWord.prototype.getWords = function(){\n    this.request.post()\n        .then( (outcome) => {\n            console.log(\"Hello\", outcome);\n        })\n}\n\n\n\n\n\nmodule.exports = Word;\n\n//# sourceURL=webpack:///./client/src/models/word.js?");
+eval("const RequestHelper = __webpack_require__(/*! ../helpers/request_helper.js */ \"./client/src/helpers/request_helper.js\");\n\nconst Word = function(url){\n    this.url = url;\n    this.request = new RequestHelper(this.url);\n}\n\n// const word = \"home\"\n\n// Word.prototype.getWords = function(){\n//     this.request.post()\n//         .then( (outcome) => {\n//             console.log(\"Hello\", outcome);\n//         })\n// }\n\n\n\n\n\nmodule.exports = Word;\n\n//# sourceURL=webpack:///./client/src/models/word.js?");
 
 /***/ })
 

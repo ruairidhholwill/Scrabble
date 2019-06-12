@@ -7,12 +7,12 @@ const Word = function(url){
 
 // const word = "home"
 
-Word.prototype.getWords = function(){
-    this.request.post()
-        .then( (outcome) => {
-            console.log("Hello", outcome);
-        })
-}
+// Word.prototype.getWords = function(){
+//     this.request.post()
+//         .then( (outcome) => {
+//             console.log("Hello", outcome);
+//         })
+// }
 
 
 
