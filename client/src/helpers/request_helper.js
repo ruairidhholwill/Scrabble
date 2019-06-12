@@ -8,4 +8,14 @@ RequestHelper.prototype.get = function () {
     .catch(error => console.log("Error in get:", error))
 };
 
+RequestHelper.prototype.post = function(payload){
+  return fetch(this.url, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: {'Content-Type': 'application/json'}
+  })
+    .then(response => response.json())
+    .catch(console.error)
+}
+
 module.exports = RequestHelper;
