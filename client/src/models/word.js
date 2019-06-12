@@ -6,7 +6,8 @@ const Word = function(url){
     this.url = url;
     this.request = new RequestHelper(this.url);
     this.letterArray = []
-    this.indexArray = []
+    this.cellIndexArray = []
+    this.rowIndexArray = []
     this.wordObj = {}
     this.word = ''
 }
@@ -14,22 +15,39 @@ const Word = function(url){
 Word.prototype.bindEvents = function(){
     PubSub.subscribe('Tile:letter-placed', (event)=>{
         this.letterArray.push(event.detail)
-        // this.wordArray.push(event.detail.attributes.parentElement.cellIndex)
-        console.log(this.letterArray)
+        // console.log(this.letterArray)
     })
-    PubSub.subscribe('Tile:letter-index', (event)=>{
-        this.indexArray.push(event.detail)
-        // this.wordArray.push(event.detail.attributes.parentElement.cellIndex)
-        console.log(this.indexArray)
-        this.createWordObject()
+
+    PubSub.subscribe('Tile:letter-row-index', (event)=>{
+        this.rowIndexArray.push(event.detail)
+        // console.log(this.rowIndexArray)
     })
+
+    PubSub.subscribe('Tile:letter-cell-index', (event)=>{
+        this.cellIndexArray.push(event.detail)
+        // console.log(this.cellIndexArray)
+        if (this.rowIndexArray.every( index => index === this.rowIndexArray[0])){
+            this.createHorizontalWordObject()
+        } else {
+            this.createVerticalWordObject()
+        }
+    })
+    
 }
 
-Word.prototype.createWordObject = function(){
-    for (var i = 0; i < this.indexArray.length; i++)
-    this.wordObj[this.indexArray[i]] = this.letterArray[i];
+Word.prototype.createHorizontalWordObject = function(){
+    for (var i = 0; i < this.cellIndexArray.length; i++)
+    this.wordObj[this.cellIndexArray[i]] = this.letterArray[i];
     
-    console.log(this.wordObj)
+    // console.log(this.wordObj)
+    this.wordToString()
+}
+
+Word.prototype.createVerticalWordObject = function(){
+    for (var i = 0; i < this.rowIndexArray.length; i++)
+    this.wordObj[this.rowIndexArray[i]] = this.letterArray[i];
+    
+    // console.log(this.wordObj)
     this.wordToString()
 }
 

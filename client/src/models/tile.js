@@ -12,7 +12,6 @@ document.addEventListener("drag", function(event) {
 
 document.addEventListener("dragstart", function(event) {
   dragged = event.target;
-  console.log(event.target)
 }, false);
 
 document.addEventListener("dragend", function(event) {
@@ -20,13 +19,11 @@ document.addEventListener("dragend", function(event) {
   }, 1);
   
 document.addEventListener("dragover", function(event) {
-  // prevent default to allow drop
   event.preventDefault();
 }, false);
 
 document.addEventListener("dragenter", function(event) {
-    
-    console.log(event.target)
+   
     if (event.target.className == 'triple'){
         event.target.style.opacity = 0.5;
     } else if (event.target.className == 'double') {
@@ -50,29 +47,31 @@ document.addEventListener("drop", function(event) {
 
   event.preventDefault();
   event.target.style.opacity = ''
-//COULD MAKE EVENT (CELL) USED MULTIPLIER FALSE
+
 
 if (event.target.className == "triple") {
     event.target.innerHTML = ''
-    // dragged.parentNode.removeChild( dragged );
+
     event.target.appendChild( dragged );
   } else if (event.target.className == "double") {
     event.target.innerHTML = ''
-    // dragged.parentNode.removeChild( dragged );
+
     event.target.appendChild( dragged );
   } else if (event.target.className == "triple_letter") {
     event.target.innerHTML = ''
-    // dragged.parentNode.removeChild( dragged );
+
     event.target.appendChild( dragged );
   } else if (event.target.className == "double_letter") {
     event.target.innerHTML = ''
-    // dragged.parentNode.removeChild( dragged );
+  
     event.target.appendChild( dragged );
   } else if (event.target.className == "tile") {
     event.target.appendChild( dragged );
 }
+
 PubSub.publish('Tile:letter-placed', dragged.innerHTML)
-PubSub.publish('Tile:letter-index', dragged.offsetParent.cellIndex)
+PubSub.publish('Tile:letter-row-index', dragged.offsetParent.parentNode.rowIndex)
+PubSub.publish('Tile:letter-cell-index', dragged.offsetParent.cellIndex)
 })
 
 }
