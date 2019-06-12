@@ -1,18 +1,15 @@
 const RequestHelper = require('../helpers/request_helper.js');
+const checkWord = require('check-word'), words = checkWord();
 
 const Word = function(url){
     this.url = url;
     this.request = new RequestHelper(this.url);
 }
 
-const word = "home"
-
-Word.prototype.getWords = function(){
-    this.request.post(word)
-        .then( (outcome) => {
-            console.log("Hello", outcome);
-        })
+Word.prototype.bindEvents = function(){
+    console.log(words.check('dog'));
 }
+
 
 
 module.exports = Word;
