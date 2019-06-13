@@ -1,11 +1,12 @@
 const RequestHelper = require('../helpers/request_helper.js');
 
+
 const Word = function(url){
     this.url = url;
     this.request = new RequestHelper(this.url);
 }
 
-const word = "home"
+const word = {word: "difficult"}
 
 Word.prototype.getWords = function(){
     this.request.post(word)
