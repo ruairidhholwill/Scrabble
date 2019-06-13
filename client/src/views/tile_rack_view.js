@@ -9,11 +9,21 @@ TileRacKView.prototype.bindEvents = function(){
 }
 
 TileRacKView.prototype.renderTileRack = function(){
+
     const tileTable = document.createElement('table');
     tileTable.id = "tile_table";
-    // const tableRow
+    const tableRow = document.createElement('tr');
+    tileTable.appendChild(tableRow);
+    this.createTileSpots(tableRow);
+    this.container.appendChild(tileTable);
+}
 
-    // this.container.appendChild(??);
+TileRacKView.prototype.createTileSpots = function(tableRow){
+    for (let index = 0; index < 7; index++) {
+        const tableSlot = document.createElement('td');
+        tableSlot.classList.add('tile');
+        tableRow.appendChild(tableSlot);
+    }
 }
 
 

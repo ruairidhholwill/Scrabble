@@ -181,7 +181,7 @@ eval("const RequestHelper = __webpack_require__(/*! ../helpers/request_helper.js
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./client/src/helpers/pub_sub.js\");\n\nconst TileRacKView = function(container){\n    this.container = container;\n}\n\nTileRacKView.prototype.bindEvents = function(){\n    this.renderTileRack();\n}\n\nTileRacKView.prototype.renderTileRack = function(){\n    const tileTable = document.createElement('table');\n    tileTable.id = \"tile_table\";\n    // const tableRow\n\n    // this.container.appendChild(??);\n}\n\n\n\n\nmodule.exports = TileRacKView;\n\n//# sourceURL=webpack:///./client/src/views/tile_rack_view.js?");
+eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./client/src/helpers/pub_sub.js\");\n\nconst TileRacKView = function(container){\n    this.container = container;\n}\n\nTileRacKView.prototype.bindEvents = function(){\n    this.renderTileRack();\n}\n\nTileRacKView.prototype.renderTileRack = function(){\n\n    const tileTable = document.createElement('table');\n    tileTable.id = \"tile_table\";\n    const tableRow = document.createElement('tr');\n    tileTable.appendChild(tableRow);\n    this.createTileSpots(tableRow);\n    this.container.appendChild(tileTable);\n}\n\nTileRacKView.prototype.createTileSpots = function(tableRow){\n    for (let index = 0; index < 7; index++) {\n        const tableSlot = document.createElement('td');\n        tableSlot.classList.add('tile');\n        tableRow.appendChild(tableSlot);\n    }\n}\n\n\n\n\nmodule.exports = TileRacKView;\n\n//# sourceURL=webpack:///./client/src/views/tile_rack_view.js?");
 
 /***/ })
 
