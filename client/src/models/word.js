@@ -54,6 +54,11 @@ Word.prototype.createVerticalWordObject = function(){
 Word.prototype.wordToString = function() {
     this.word = Object.values(this.wordObj).join('')
     console.log(this.word)
+    // if (word is true){
+    //     publish word to scoreboard
+    // } else {
+    //     reset tiles
+    // }
 }
 
 
