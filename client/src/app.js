@@ -4,7 +4,6 @@ const Tile = require('./models/tile.js')
 const Word = require('./models/word.js');
 const TileRackView = require('./views/tile_rack_view.js');
 const Board = require('./models/board.js')
-const Word = require('./models/word.js')
 
 document.addEventListener('DOMContentLoaded', () => {
 
