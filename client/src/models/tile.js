@@ -73,7 +73,7 @@ if (event.target.className == "triple") {
 if (dragged.parentElement.previousElementSibling.innerText.length === 1) {
   const previousLettersArray = []
   previousLettersArray.push(dragged.parentElement.previousElementSibling.innerText)
-  console.log(previousLettersArray)
+  console.log('drag', previousLettersArray)
 }
 
 PubSub.publish('Tile:letter-placed', dragged.innerHTML)
