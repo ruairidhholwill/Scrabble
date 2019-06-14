@@ -82,5 +82,30 @@
     padding-top: 5px;
     margin-bottom: 0;
     background-color: ivory;
+<<<<<<< HEAD
 }
 
+=======
+    text-transform: capitalize;
+}
+
+#play_game {
+    margin-top: 10px;
+    padding: 10px;
+}
+
+#submit_word {
+    margin-top: 10px;
+    padding: 10px;
+}
+
+#swap_tiles {
+    margin-top: 10px;
+    padding: 10px;
+}
+
+#pass {
+    margin-top: 10px;
+    padding: 10px;
+}
+>>>>>>> develop

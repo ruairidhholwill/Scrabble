@@ -93,7 +93,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const Bag = __webpack_require__(/*! ./models/bag.js */ \"./client/src/models/bag.js\")\nconst Player = __webpack_require__(/*! ./models/player.js */ \"./client/src/models/player.js\")\nconst Tile = __webpack_require__(/*! ./models/tile.js */ \"./client/src/models/tile.js\")\nconst Word = __webpack_require__(/*! ./models/word.js */ \"./client/src/models/word.js\");\nconst TileRackView = __webpack_require__(/*! ./views/tile_rack_view.js */ \"./client/src/views/tile_rack_view.js\");\nconst Board = __webpack_require__(/*! ./models/board.js */ \"./client/src/models/board.js\")\n\ndocument.addEventListener('DOMContentLoaded', () => {\n\n    const dragElement = document.getElementById(\"#dragable_letter\")\n    const tile = new Tile(dragElement)\n    tile.bindEvents();\n\n    const tileRackElement = document.querySelector(\"#tile_rack\")\n    const tileRackView = new TileRackView(tileRackElement);\n    tileRackView.bindEvents();\n\n    const player = new Player(name)\n    player.bindEvents();\n\n    const url = 'http://localhost:3000/api/scrabble';\n    const bag = new Bag(url);\n    bag.getData();\n    // bag.bindEvents();\n\n    const wordUrl = 'http://localhost:3000/api/scrabblewords';\n    const word = new Word(wordUrl);\n    word.bindEvents()\n    word.checkWord();\n    // word.getWords();\n})\n\n\n\n\n\n\n//# sourceURL=webpack:///./client/src/app.js?");
+eval("const Bag = __webpack_require__(/*! ./models/bag.js */ \"./client/src/models/bag.js\")\nconst Player = __webpack_require__(/*! ./models/player.js */ \"./client/src/models/player.js\")\nconst Tile = __webpack_require__(/*! ./models/tile.js */ \"./client/src/models/tile.js\")\nconst Word = __webpack_require__(/*! ./models/word.js */ \"./client/src/models/word.js\");\nconst TileRackView = __webpack_require__(/*! ./views/tile_rack_view.js */ \"./client/src/views/tile_rack_view.js\");\nconst Board = __webpack_require__(/*! ./models/board.js */ \"./client/src/models/board.js\")\nconst StartGame = __webpack_require__(/*! ./models/start_game.js */ \"./client/src/models/start_game.js\")\nconst PlayerOptionsView = __webpack_require__(/*! ./views/player_options_view.js */ \"./client/src/views/player_options_view.js\")\n\ndocument.addEventListener('DOMContentLoaded', () => {\n\n    const dragElement = document.getElementById(\"#dragable_letter\")\n    const tile = new Tile(dragElement)\n    tile.bindEvents();\n\n    const tileRackElement = document.querySelector(\"#tile_rack\")\n    const tileRackView = new TileRackView(tileRackElement);\n    tileRackView.bindEvents();\n\n    const player = new Player(name)\n    player.bindEvents();\n\n    const playerOptionsElement = document.querySelector('#player_options')\n\n    const playerOptionsView = new PlayerOptionsView(playerOptionsElement)\n    playerOptionsView.bindEvents()\n\n    const startGame = new StartGame(playerOptionsElement)\n    startGame.listenForStart()\n\n    const url = 'http://localhost:3000/api/scrabble';\n    const bag = new Bag(url);\n    bag.getData();\n    // bag.bindEvents();\n\n    const wordUrl = 'http://localhost:3000/api/scrabblewords';\n    const word = new Word(wordUrl);\n    word.bindEvents();\n    word.checkWord();\n    // word.getWords();\n})\n\n\n\n\n\n\n//# sourceURL=webpack:///./client/src/app.js?");
 
 /***/ }),
 
@@ -152,6 +152,17 @@ eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./client
 
 /***/ }),
 
+/***/ "./client/src/models/start_game.js":
+/*!*****************************************!*\
+  !*** ./client/src/models/start_game.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const PlayerOptionsView = __webpack_require__(/*! ../views/player_options_view.js */ \"./client/src/views/player_options_view.js\")\nconst PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./client/src/helpers/pub_sub.js\")\n\nconst StartGame = function(container){\n    this.container = container\n}\n\nStartGame.prototype.listenForStart = function () {\n    const playGameButton = this.container.querySelector('#play_game')\n    playGameButton.addEventListener('click', (event) => {\n        PubSub.publish('StartGame:play-game-pushed', event)\n        }\n    )\n}\n\nmodule.exports = StartGame\n\n//# sourceURL=webpack:///./client/src/models/start_game.js?");
+
+/***/ }),
+
 /***/ "./client/src/models/tile.js":
 /*!***********************************!*\
   !*** ./client/src/models/tile.js ***!
@@ -174,6 +185,17 @@ eval("const RequestHelper = __webpack_require__(/*! ../helpers/request_helper.js
 
 /***/ }),
 
+/***/ "./client/src/views/player_options_view.js":
+/*!*************************************************!*\
+  !*** ./client/src/views/player_options_view.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./client/src/helpers/pub_sub.js\")\n\nconst PlayerOptionsView = function(container){\n    this.container = container\n}\n\nPlayerOptionsView.prototype.bindEvents = function(){\n\n    PubSub.subscribe('StartGame:play-game-pushed' , (event)=> {\n        this.startGameRender()\n    })\n  \n}\n\nPlayerOptionsView.prototype.startGameRender = function(){\n        this.container.innerHTML = ''\n\n        submitWordButton = document.createElement('button')\n        submitWordButton.id = \"submit_word\"\n        submitWordButton.textContent = \"Submit Word\"\n        this.container.appendChild(submitWordButton)\n\n        swapTilesButton = document.createElement('button')\n        swapTilesButton.id = \"swap_tiles\"\n        swapTilesButton.textContent = \"Swap Tiles\"\n        this.container.appendChild(swapTilesButton)\n\n        passButton = document.createElement('button')\n        passButton.id = \"pass\"\n        passButton.textContent = \"Pass\"\n        this.container.appendChild(passButton)\n}\n\nmodule.exports = PlayerOptionsView\n\n\n\n//# sourceURL=webpack:///./client/src/views/player_options_view.js?");
+
+/***/ }),
+
 /***/ "./client/src/views/tile_rack_view.js":
 /*!********************************************!*\
   !*** ./client/src/views/tile_rack_view.js ***!
@@ -181,7 +203,7 @@ eval("const RequestHelper = __webpack_require__(/*! ../helpers/request_helper.js
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./client/src/helpers/pub_sub.js\");\n\nconst TileRacKView = function(container){\n    this.container = container;\n}\n\nTileRacKView.prototype.bindEvents = function(){\n    this.renderTileRack();\n}\n\nTileRacKView.prototype.renderTileRack = function(){\n\n    const tileTable = document.createElement('table');\n    tileTable.id = \"tile_table\";\n    const tableRow = document.createElement('tr');\n    tileTable.appendChild(tableRow);\n    this.createTileSpots(tableRow);\n    this.container.appendChild(tileTable);\n}\n\nTileRacKView.prototype.createTileSpots = function(tableRow){\n    for (let index = 0; index < 7; index++) {\n        const tableSlot = document.createElement('td');\n        tableSlot.classList.add('tile');\n        tableRow.appendChild(tableSlot);\n    }\n}\n\n\n\n\nmodule.exports = TileRacKView;\n\n//# sourceURL=webpack:///./client/src/views/tile_rack_view.js?");
+eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./client/src/helpers/pub_sub.js\");\n\nconst TileRacKView = function(container){\n    this.container = container;\n}\n\nTileRacKView.prototype.bindEvents = function(){\n    this.renderTileRack();\n    PubSub.subscribe('Bag:random-tiles', (event) =>{\n        const tiles = event.detail;\n        this.populateTileRack(tiles);\n        \n    })\n}\n\nTileRacKView.prototype.renderTileRack = function(){\n\n    const tileTable = document.createElement('table');\n    tileTable.id = \"tile_table\";\n    const tableRow = document.createElement('tr');\n    tileTable.appendChild(tableRow);\n    this.createTileSpots(tableRow);\n    this.container.appendChild(tileTable);\n}\n\nTileRacKView.prototype.createTileSpots = function(tableRow){\n    for (let index = 0; index < 7; index++) {\n        const tableSlot = document.createElement('td');\n        tableSlot.classList.add('tile');\n        tableRow.appendChild(tableSlot);\n    }\n}\n\nTileRacKView.prototype.populateTileRack = function(tiles){\n    const tileRack = document.querySelector('#tile_table');\n    const cellsArray = tileRack.rows[0].cells;\n    const newTiles = [];\n    for (let i = 0; i < 7; i++) {\n        const tile = document.createElement('h2');\n        tile.textContent = tiles[i].letter;\n        tile.id = 'dragable_letter';\n        tile.draggable = true;\n        cellsArray[i].appendChild(tile);\n    }\n    for (let i = 7; i < tiles.length; i++) {\n        newTiles.push(tiles[i]);\n    }\n    PubSub.publish('TileRackView:tiles-removed-from-bag', newTiles)\n}\n\n\n\n\nmodule.exports = TileRacKView;\n\n//# sourceURL=webpack:///./client/src/views/tile_rack_view.js?");
 
 /***/ })
 

@@ -6,6 +6,11 @@ const TileRacKView = function(container){
 
 TileRacKView.prototype.bindEvents = function(){
     this.renderTileRack();
+    PubSub.subscribe('Bag:random-tiles', (event) =>{
+        const tiles = event.detail;
+        this.populateTileRack(tiles);
+        
+    })
 }
 
 TileRacKView.prototype.renderTileRack = function(){
@@ -24,6 +29,23 @@ TileRacKView.prototype.createTileSpots = function(tableRow){
         tableSlot.classList.add('tile');
         tableRow.appendChild(tableSlot);
     }
+}
+
+TileRacKView.prototype.populateTileRack = function(tiles){
+    const tileRack = document.querySelector('#tile_table');
+    const cellsArray = tileRack.rows[0].cells;
+    const newTiles = [];
+    for (let i = 0; i < 7; i++) {
+        const tile = document.createElement('h2');
+        tile.textContent = tiles[i].letter;
+        tile.id = 'dragable_letter';
+        tile.draggable = true;
+        cellsArray[i].appendChild(tile);
+    }
+    for (let i = 7; i < tiles.length; i++) {
+        newTiles.push(tiles[i]);
+    }
+    PubSub.publish('TileRackView:tiles-removed-from-bag', newTiles)
 }
 
 
