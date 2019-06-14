@@ -2,6 +2,7 @@ const RequestHelper = require('../helpers/request_helper.js');
 const PubSub = require('../helpers/pub_sub.js')
 
 
+
 const Word = function(url){
     this.url = url;
     this.request = new RequestHelper(this.url);
@@ -49,6 +50,17 @@ Word.prototype.createVerticalWordObject = function(){
     
     // console.log(this.wordObj)
     this.wordToString()
+}
+
+const word = "hello";
+
+const wordToCheck = {word: word}
+
+Word.prototype.checkWord = function(){
+    this.request.post(wordToCheck)
+        .then( (outcome) => {
+            console.log("Hello", outcome);
+        })
 }
 
 Word.prototype.wordToString = function() {
