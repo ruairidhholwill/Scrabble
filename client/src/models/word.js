@@ -32,7 +32,7 @@ Word.prototype.bindEvents = function(){
 
     PubSub.subscribe('Tile:letter-cell-index', (event)=>{
         this.cellIndexArray.push(event.detail)
-        if ((this.rowIndexArray.every( index => index === (this.rowIndexArray[0])) && (this.rowIndexArray.length !==  1)) || ((this.previousLettersArrayHorizontal >= 1) || (this.nextLettersArrayHorizontal >= 1))){
+        if ((this.rowIndexArray.every( index => index === (this.rowIndexArray[0])) && (this.rowIndexArray.length !==  1)) || ((this.previousLettersArrayHorizontal.length >= 1) || (this.nextLettersArrayHorizontal.length >= 1))){
             this.createHorizontalWordObject()
         } else {
             this.createVerticalWordObject()
@@ -87,6 +87,8 @@ Word.prototype.checkIfAnyPreviousLettersHorizontal = function(dragged){
         this.checkForMorePreviousLettersHorizontal(newElement)
         }
     }
+    for (var i = 0; i < this.previousCellIndexHorizontal.length; i++)
+    this.wordObj[this.previousCellIndexHorizontal[i]] = this.previousLettersArrayHorizontal[i];
 }
 
 Word.prototype.checkForMorePreviousLettersHorizontal = function(cell){
@@ -112,6 +114,8 @@ Word.prototype.checkIfAnyPreviousLettersVertical = function(dragged, index){
             this.checkForMorePreviousLettersVertical(newElement, index)
         }
     } 
+    for (var i = 0; i < this.previousCellIndexVertical.length; i++)
+    this.wordObj[this.previousCellIndexVertical[i]] = this.previousLettersArrayVertical[i];
 }
 
 Word.prototype.checkForMorePreviousLettersVertical = function(cell, index){
@@ -136,7 +140,9 @@ Word.prototype.checkIfAnyLettersAfterWordHorizontal = function(dragged){
         if (newElement.childElementCount == 1){
             this.checkForMoreFollowingLettersHorizontal(newElement)
         }
-    }       
+    }  
+    for (var i = 0; i < this.nextCellIndex.length; i++)
+    this.wordObj[this.nextCellIndex[i]] = this.nextLettersArrayHorizontal[i];     
 }
 
 Word.prototype.checkForMoreFollowingLettersHorizontal = function(cell){
@@ -162,6 +168,8 @@ Word.prototype.checkIfAnyLettersAfterWordVertical = function(dragged, index){
             this.checkForMoreFollowingLettersVertical(newElement, index)
         }
     } 
+    for (var i = 0; i < this.nextCellIndexVertical.length; i++)
+    this.wordObj[this.nextCellIndexVertical[i]] = this.nextLettersArrayVertical[i];
 }
 
 Word.prototype.checkForMoreFollowingLettersVertical = function(cell, index){
