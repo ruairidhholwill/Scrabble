@@ -2,6 +2,7 @@ const PubSub = require('../helpers/pub_sub.js')
 
 const Tile = function(element){
     this.element = element
+
 }
 
 Tile.prototype.bindEvents = function(){
@@ -67,6 +68,12 @@ if (event.target.className == "triple") {
     event.target.appendChild( dragged );
   } else if (event.target.className == "tile") {
     event.target.appendChild( dragged );
+}
+
+if (dragged.parentElement.previousElementSibling.innerText.length === 1) {
+  const previousLettersArray = []
+  previousLettersArray.push(dragged.parentElement.previousElementSibling.innerText)
+  console.log(previousLettersArray)
 }
 
 PubSub.publish('Tile:letter-placed', dragged.innerHTML)
