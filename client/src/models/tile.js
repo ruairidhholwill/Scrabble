@@ -2,22 +2,22 @@ const PubSub = require('../helpers/pub_sub.js')
 
 const Tile = function(element){
     this.element = element
-
+    this.dragged = ''
 }
 
 Tile.prototype.bindEvents = function(){
 
 document.addEventListener("drag", function(event) {
     event.target.style.visibility = "hidden";
-  }, 1);
+}, 1);
 
 document.addEventListener("dragstart", function(event) {
-  dragged = event.target;
+  this.dragged = event.target;
 }, false);
 
 document.addEventListener("dragend", function(event) {
     event.target.style.visibility = "";
-  }, 1);
+}, 1);
   
 document.addEventListener("dragover", function(event) {
   event.preventDefault();
@@ -50,39 +50,45 @@ document.addEventListener("drop", function(event) {
   event.target.style.opacity = ''
 
 
-if (event.target.className == "triple") {
+  if (event.target.className == "triple") {
     event.target.innerHTML = ''
 
-    event.target.appendChild( dragged );
+    event.target.appendChild( this.dragged );
   } else if (event.target.className == "double") {
     event.target.innerHTML = ''
 
-    event.target.appendChild( dragged );
+    event.target.appendChild( this.dragged );
   } else if (event.target.className == "triple_letter") {
     event.target.innerHTML = ''
 
-    event.target.appendChild( dragged );
+    event.target.appendChild( this.dragged );
   } else if (event.target.className == "double_letter") {
     event.target.innerHTML = ''
   
-    event.target.appendChild( dragged );
+    event.target.appendChild( this.dragged );
   } else if (event.target.className == "tile") {
-    event.target.appendChild( dragged );
+    event.target.appendChild( this.dragged );
 }
 
-if (dragged.offsetParent.previousElementSibling.firstElementChild.id === "dragable_letter_fixed") {
-  const previousLettersArray = []
-  previousLettersArray.push(dragged.parentElement.previousElementSibling.innerText)
-  console.log('drag', previousLettersArray)
-}
 
-console.log('dragged', dragged)
+console.log('dragged', this.dragged)
+// Tile.checkIfAnyPreviousLetters(this.dragged);
 
-PubSub.publish('Tile:letter-placed', dragged.innerHTML)
-PubSub.publish('Tile:letter-row-index', dragged.offsetParent.parentNode.rowIndex)
-PubSub.publish('Tile:letter-cell-index', dragged.offsetParent.cellIndex)
+PubSub.publish('Tile:dragged-detail', this.dragged)
+PubSub.publish('Tile:letter-placed', this.dragged.innerHTML)
+PubSub.publish('Tile:letter-row-index', this.dragged.offsetParent.parentNode.rowIndex)
+PubSub.publish('Tile:letter-cell-index', this.dragged.offsetParent.cellIndex)
 })
 
 }
+
+// Tile.prototype.checkIfAnyPreviousLetters = function(dragged){
+//   if (dragged.offsetParent.previousElementSibling.firstElementChild.id === "dragable_letter_fixed") {
+//     console.log('jhawgd', dragged.offsetParent.previousElementSibling)
+//     const previousLettersArray = []
+//     previousLettersArray.push(dragged.parentElement.previousElementSibling.innerText)
+//     console.log('drag', previousLettersArray)
+//   }
+// }
 
 module.exports = Tile

@@ -11,6 +11,7 @@ const Word = function(url){
     this.rowIndexArray = []
     this.wordObj = {}
     this.word = ''
+    this.previousLettersArray = []
 }
 
 Word.prototype.bindEvents = function(){
@@ -32,6 +33,10 @@ Word.prototype.bindEvents = function(){
         } else {
             this.createVerticalWordObject()
         }
+    })
+
+    PubSub.subscribe('Tile:dragged-detail', (dragged)=>{
+        this.checkIfAnyPreviousLetters(dragged.detail)
     })
     
 }
@@ -61,6 +66,24 @@ Word.prototype.checkWord = function(){
         .then( (outcome) => {
             console.log("Hello", outcome);
         })
+}
+
+Word.prototype.checkIfAnyPreviousLetters = function(dragged){
+    if (dragged.offsetParent.previousElementSibling.firstElementChild.id === "dragable_letter_fixed") {
+        this.previousLettersArray.push(dragged.parentElement.previousElementSibling.innerText)
+        console.log('drag', this.previousLettersArray)
+        const newElement = dragged.offsetParent.previousElementSibling
+        this.checkForMorePreviousLetters(newElement)
+    }
+}
+
+Word.prototype.checkForMorePreviousLetters = function(cell){
+    if (cell.previousElementSibling.firstElementChild.id === "dragable_letter_fixed"){
+        this.previousLettersArray.push(cell.previousElementSibling.firstElementChild.innerText)
+        console.log(this.previousLettersArray)
+        const newCell = cell.previousElementSibling;
+        this.checkForMorePreviousLetters(newCell)
+    } 
 }
 
 Word.prototype.wordToString = function() {
