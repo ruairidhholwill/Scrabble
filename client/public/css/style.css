@@ -83,6 +83,7 @@
     margin-bottom: 0;
     margin-left: 1px;
     background-color: ivory;
+    text-transform: capitalize;
 }
 
 #play_game {
