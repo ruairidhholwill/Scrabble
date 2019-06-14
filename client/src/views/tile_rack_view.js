@@ -6,6 +6,9 @@ const TileRacKView = function(container){
 
 TileRacKView.prototype.bindEvents = function(){
     this.renderTileRack();
+    PubSub.subscribe('Bag:random-tiles', (event) =>{
+        const tiles = event.detail;
+    })
 }
 
 TileRacKView.prototype.renderTileRack = function(){
