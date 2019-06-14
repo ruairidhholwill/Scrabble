@@ -72,7 +72,6 @@ document.addEventListener("drop", function(event) {
 
 
 console.log('dragged', this.dragged)
-// Tile.checkIfAnyPreviousLetters(this.dragged);
 
 PubSub.publish('Tile:dragged-detail', this.dragged)
 PubSub.publish('Tile:letter-placed', this.dragged.innerHTML)
@@ -81,14 +80,5 @@ PubSub.publish('Tile:letter-cell-index', this.dragged.offsetParent.cellIndex)
 })
 
 }
-
-// Tile.prototype.checkIfAnyPreviousLetters = function(dragged){
-//   if (dragged.offsetParent.previousElementSibling.firstElementChild.id === "dragable_letter_fixed") {
-//     console.log('jhawgd', dragged.offsetParent.previousElementSibling)
-//     const previousLettersArray = []
-//     previousLettersArray.push(dragged.parentElement.previousElementSibling.innerText)
-//     console.log('drag', previousLettersArray)
-//   }
-// }
 
 module.exports = Tile
