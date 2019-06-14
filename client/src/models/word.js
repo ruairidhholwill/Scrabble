@@ -36,10 +36,16 @@ Word.prototype.bindEvents = function(){
     })
 
     PubSub.subscribe('Tile:dragged-detail', (dragged)=>{
+        const indexOfCell = dragged.detail.offsetParent.cellIndex
+        
         if ((dragged.detail.offsetParent.previousElementSibling.childElementCount == 1) && (dragged.detail.offsetParent.previousElementSibling.firstElementChild.id === "dragable_letter_fixed")){
-            this.checkIfAnyPreviousLetters(dragged.detail)
+            this.checkIfAnyPreviousLettersHorizontal(dragged.detail)
         } else if (dragged.detail.offsetParent.nextElementSibling.childElementCount == 1){
-            this.checkIfAnyLettersAfterWord(dragged.detail)
+            this.checkIfAnyLettersAfterWordHorizontal(dragged.detail)
+        } else if ((dragged.detail.offsetParent.parentNode.previousElementSibling.cells[indexOfCell]) && (dragged.detail.offsetParent.parentNode.previousElementSibling.cells[indexOfCell].firstElementChild.id === "dragable_letter_fixed")){
+            this.checkIfAnyPreviousLettersVertical(dragged.detail)
+        } else if (dragged.detail.offsetParent.parentNode.nextElementSibling.cells[indexOfCell]){
+            this.checkIfAnyLettersAfterWordVertical(dragged.detail)
         }
     })
     
@@ -68,48 +74,52 @@ Word.prototype.checkWord = function(){
         })
 }
 
-Word.prototype.checkIfAnyPreviousLetters = function(dragged){
+Word.prototype.checkIfAnyPreviousLettersHorizontal = function(dragged){
     if (dragged.offsetParent.previousElementSibling.firstElementChild.id === "dragable_letter_fixed") {
         this.previousLettersArray.push(dragged.parentElement.previousElementSibling.innerText)
         this.previousCellIndex.push(dragged.offsetParent.previousElementSibling.cellIndex)
         const newElement = dragged.offsetParent.previousElementSibling.previousElementSibling
         if (newElement.childElementCount == 1){
-        this.checkForMorePreviousLetters(newElement)
+        this.checkForMorePreviousLettersHorizontal(newElement)
         }
     }
 }
 
-Word.prototype.checkForMorePreviousLetters = function(cell){
+Word.prototype.checkForMorePreviousLettersHorizontal = function(cell){
     if (cell.firstElementChild.id === "dragable_letter_fixed"){
         this.previousLettersArray.push(cell.firstElementChild.innerText)
         this.previousCellIndex.push(cell.cellIndex)
         const newCell = cell.previousElementSibling;
         if (newCell.childElementCount == 1){
-            this.checkForMorePreviousLetters(newCell)
+            this.checkForMorePreviousLettersHorizontal(newCell)
         }
     }
     for (var i = 0; i < this.previousCellIndex.length; i++)
     this.wordObj[this.previousCellIndex[i]] = this.previousLettersArray[i];
 }
 
-Word.prototype.checkIfAnyLettersAfterWord = function(dragged){
+Word.prototype.checkIfAnyPreviousLettersVertical = function(dragged){
+
+}
+
+Word.prototype.checkIfAnyLettersAfterWordHorizontal = function(dragged){
     if (dragged.offsetParent.nextElementSibling.firstElementChild.id === "dragable_letter_fixed") {
         this.nextLettersArray.push(dragged.parentElement.nextElementSibling.innerText)
         this.nextCellIndex.push(dragged.offsetParent.nextElementSibling.cellIndex)
         const newElement = dragged.offsetParent.nextElementSibling.nextElementSibling
         if (newElement.childElementCount == 1){
-            this.checkForMoreFollowingLetters(newElement)
+            this.checkForMoreFollowingLettersHorizontal(newElement)
         }
     }       
 }
 
-Word.prototype.checkForMoreFollowingLetters = function(cell){
+Word.prototype.checkForMoreFollowingLettersHorizontal = function(cell){
     if (cell.firstElementChild.id === "dragable_letter_fixed"){
         this.nextLettersArray.push(cell.firstElementChild.innerText)
         this.nextCellIndex.push(cell.cellIndex)
         const newCell = cell.nextElementSibling;
         if (newCell.childElementCount == 1){
-            this.checkForMoreFollowingLetters(newCell)
+            this.checkForMoreFollowingLettersHorizontal(newCell)
         }
     }
     for (var i = 0; i < this.nextCellIndex.length; i++)
