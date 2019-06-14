@@ -5,10 +5,14 @@ const TurnView = function(){
 }
 
 TurnView.prototype.bindEvents = function(){
-    // const playButton = document.querySelector('#submit_word');
-    // playButton.addEventListener('click', (event) => {
-    //     PubSub.publish('TurnView:submit-word-pressed', event)
+    // const submitWordButton = document.querySelector('#options');
+    // submitWordButton.addEventListener('click', () => {
+    //     console.log("HERE");
     // })
+    
+    
+
+    
 }
 
 
