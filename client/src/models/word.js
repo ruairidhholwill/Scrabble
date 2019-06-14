@@ -10,7 +10,7 @@ const Word = function(url){
     this.cellIndexArray = []
     this.rowIndexArray = []
     this.wordObj = {}
-    this.word = ''
+    this.wordArray = []
     this.previousLettersArray = []
 }
 
@@ -44,7 +44,6 @@ Word.prototype.bindEvents = function(){
 Word.prototype.createHorizontalWordObject = function(){
     for (var i = 0; i < this.cellIndexArray.length; i++)
     this.wordObj[this.cellIndexArray[i]] = this.letterArray[i];
-    
     // console.log(this.wordObj)
     this.wordToString()
 }
@@ -87,8 +86,15 @@ Word.prototype.checkForMorePreviousLetters = function(cell){
 }
 
 Word.prototype.wordToString = function() {
-    this.word = Object.values(this.wordObj).join('')
-    console.log(this.word)
+    this.wordArray = Object.values(this.wordObj)
+    
+    if (this.previousLettersArray.length != 0){
+        this.previousLettersArray.forEach((letter)=>{
+            this.wordArray.unshift(letter)
+        })
+    } 
+
+    console.log(this.wordArray)
     // if (word is true){
     //     publish word to scoreboard
     // } else {
