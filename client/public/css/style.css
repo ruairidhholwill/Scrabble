@@ -84,3 +84,23 @@
     margin-left: 1px;
     background-color: ivory;
 }
+
+#play_game {
+    margin-top: 10px;
+    padding: 10px;
+}
+
+#submit_word {
+    margin-top: 10px;
+    padding: 10px;
+}
+
+#swap_tiles {
+    margin-top: 10px;
+    padding: 10px;
+}
+
+#pass {
+    margin-top: 10px;
+    padding: 10px;
+}

@@ -4,6 +4,8 @@ const Tile = require('./models/tile.js')
 const Word = require('./models/word.js');
 const TileRackView = require('./views/tile_rack_view.js');
 const Board = require('./models/board.js')
+const StartGame = require('./models/start_game.js')
+const PlayerOptionsView = require('./views/player_options_view.js')
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -18,6 +20,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const player = new Player(name)
     player.bindEvents();
 
+    const playerOptionsElement = document.querySelector('#player_options')
+
+    const playerOptionsView = new PlayerOptionsView(playerOptionsElement)
+    playerOptionsView.bindEvents()
+
+    const startGame = new StartGame(playerOptionsElement)
+    startGame.listenForStart()
+
     const url = 'http://localhost:3000/api/scrabble';
     const bag = new Bag(url);
     bag.getData();
@@ -26,6 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const wordUrl = 'http://localhost:3000/api/scrabblewords';
     const word = new Word(wordUrl);
     word.checkWord();
+
+    
 })
 
 

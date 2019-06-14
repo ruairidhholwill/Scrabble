@@ -93,7 +93,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const Bag = __webpack_require__(/*! ./models/bag.js */ \"./client/src/models/bag.js\")\nconst Player = __webpack_require__(/*! ./models/player.js */ \"./client/src/models/player.js\")\nconst Tile = __webpack_require__(/*! ./models/tile.js */ \"./client/src/models/tile.js\")\nconst Word = __webpack_require__(/*! ./models/word.js */ \"./client/src/models/word.js\");\nconst TileRackView = __webpack_require__(/*! ./views/tile_rack_view.js */ \"./client/src/views/tile_rack_view.js\");\nconst Board = __webpack_require__(/*! ./models/board.js */ \"./client/src/models/board.js\")\n\ndocument.addEventListener('DOMContentLoaded', () => {\n\n    const dragElement = document.getElementById(\"#dragable_letter\")\n    const tile = new Tile(dragElement)\n    tile.bindEvents();\n\n    const tileRackElement = document.querySelector(\"#tile_rack\")\n    const tileRackView = new TileRackView(tileRackElement);\n    tileRackView.bindEvents();\n\n    const player = new Player(name)\n    player.bindEvents();\n\n    const url = 'http://localhost:3000/api/scrabble';\n    const bag = new Bag(url);\n    bag.getData();\n    // bag.bindEvents();\n\n    const wordUrl = 'http://localhost:3000/api/scrabblewords';\n    const word = new Word(wordUrl);\n    word.checkWord();\n})\n\n\n\n\n\n\n//# sourceURL=webpack:///./client/src/app.js?");
+eval("const Bag = __webpack_require__(/*! ./models/bag.js */ \"./client/src/models/bag.js\")\nconst Player = __webpack_require__(/*! ./models/player.js */ \"./client/src/models/player.js\")\nconst Tile = __webpack_require__(/*! ./models/tile.js */ \"./client/src/models/tile.js\")\nconst Word = __webpack_require__(/*! ./models/word.js */ \"./client/src/models/word.js\");\nconst TileRackView = __webpack_require__(/*! ./views/tile_rack_view.js */ \"./client/src/views/tile_rack_view.js\");\nconst Board = __webpack_require__(/*! ./models/board.js */ \"./client/src/models/board.js\")\nconst StartGame = __webpack_require__(/*! ./models/start_game.js */ \"./client/src/models/start_game.js\")\nconst PlayerOptionsView = __webpack_require__(/*! ./views/player_options_view.js */ \"./client/src/views/player_options_view.js\")\n\ndocument.addEventListener('DOMContentLoaded', () => {\n\n    const dragElement = document.getElementById(\"#dragable_letter\")\n    const tile = new Tile(dragElement)\n    tile.bindEvents();\n\n    const tileRackElement = document.querySelector(\"#tile_rack\")\n    const tileRackView = new TileRackView(tileRackElement);\n    tileRackView.bindEvents();\n\n    const player = new Player(name)\n    player.bindEvents();\n\n    const playerOptionsElement = document.querySelector('#player_options')\n\n    const playerOptionsView = new PlayerOptionsView(playerOptionsElement)\n    playerOptionsView.bindEvents()\n\n    const startGame = new StartGame(playerOptionsElement)\n    startGame.listenForStart()\n\n    const url = 'http://localhost:3000/api/scrabble';\n    const bag = new Bag(url);\n    bag.getData();\n    // bag.bindEvents();\n\n    const wordUrl = 'http://localhost:3000/api/scrabblewords';\n    const word = new Word(wordUrl);\n    word.checkWord();\n\n    \n})\n\n\n\n\n\n\n//# sourceURL=webpack:///./client/src/app.js?");
 
 /***/ }),
 
@@ -152,6 +152,17 @@ eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./client
 
 /***/ }),
 
+/***/ "./client/src/models/start_game.js":
+/*!*****************************************!*\
+  !*** ./client/src/models/start_game.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const PlayerOptionsView = __webpack_require__(/*! ../views/player_options_view.js */ \"./client/src/views/player_options_view.js\")\nconst PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./client/src/helpers/pub_sub.js\")\n\nconst StartGame = function(container){\n    this.container = container\n}\n\nStartGame.prototype.listenForStart = function () {\n    const playGameButton = this.container.querySelector('#play_game')\n    playGameButton.addEventListener('click', (event) => {\n        PubSub.publish('StartGame:play-game-pushed', event)\n        }\n    )\n}\n\nmodule.exports = StartGame\n\n//# sourceURL=webpack:///./client/src/models/start_game.js?");
+
+/***/ }),
+
 /***/ "./client/src/models/tile.js":
 /*!***********************************!*\
   !*** ./client/src/models/tile.js ***!
@@ -171,6 +182,17 @@ eval("const Tile = function(element){\n    this.element = element\n}\n\nTile.pro
 /***/ (function(module, exports, __webpack_require__) {
 
 eval("const RequestHelper = __webpack_require__(/*! ../helpers/request_helper.js */ \"./client/src/helpers/request_helper.js\");\n\n\nconst Word = function(url){\n    this.url = url;\n    this.request = new RequestHelper(this.url);\n}\n\nconst word = \"hello\";\n\nconst wordToCheck = {word: word}\n\nWord.prototype.checkWord = function(){\n    this.request.post(wordToCheck)\n        .then( (outcome) => {\n            console.log(\"Hello\", outcome);\n        })\n}\n\n\nmodule.exports = Word;\n\n//# sourceURL=webpack:///./client/src/models/word.js?");
+
+/***/ }),
+
+/***/ "./client/src/views/player_options_view.js":
+/*!*************************************************!*\
+  !*** ./client/src/views/player_options_view.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./client/src/helpers/pub_sub.js\")\n\nconst PlayerOptionsView = function(container){\n    this.container = container\n}\n\nPlayerOptionsView.prototype.bindEvents = function(){\n\n    PubSub.subscribe('StartGame:play-game-pushed' , (event)=> {\n        this.startGameRender()\n    })\n  \n}\n\nPlayerOptionsView.prototype.startGameRender = function(){\n        this.container.innerHTML = ''\n\n        submitWordButton = document.createElement('button')\n        submitWordButton.id = \"submit_word\"\n        submitWordButton.textContent = \"Submit Word\"\n        this.container.appendChild(submitWordButton)\n\n        swapTilesButton = document.createElement('button')\n        swapTilesButton.id = \"swap_tiles\"\n        swapTilesButton.textContent = \"Swap Tiles\"\n        this.container.appendChild(swapTilesButton)\n\n        passButton = document.createElement('button')\n        passButton.id = \"pass\"\n        passButton.textContent = \"Pass\"\n        this.container.appendChild(passButton)\n}\n\nmodule.exports = PlayerOptionsView\n\n\n\n//# sourceURL=webpack:///./client/src/views/player_options_view.js?");
 
 /***/ }),
 
