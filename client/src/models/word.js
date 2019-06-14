@@ -6,10 +6,12 @@ const Word = function(url){
     this.request = new RequestHelper(this.url);
 }
 
-const word = {word: "difficult"}
+const word = "hello";
 
-Word.prototype.getWords = function(){
-    this.request.post(word)
+const wordToCheck = {word: word}
+
+Word.prototype.checkWord = function(){
+    this.request.post(wordToCheck)
         .then( (outcome) => {
             console.log("Hello", outcome);
         })
