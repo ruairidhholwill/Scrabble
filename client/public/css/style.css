@@ -13,7 +13,9 @@
 #tile_table {
     margin-left: auto;
     margin-right: auto;
-
+    table-layout: fixed;
+    border: solid 5px black;
+    box-shadow: 5px 5px;
 }
 
 .tile {
