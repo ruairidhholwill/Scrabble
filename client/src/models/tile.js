@@ -70,11 +70,13 @@ if (event.target.className == "triple") {
     event.target.appendChild( dragged );
 }
 
-if (dragged.parentElement.previousElementSibling.innerText.length === 1) {
+if (dragged.offsetParent.previousElementSibling.firstElementChild.id === "dragable_letter_fixed") {
   const previousLettersArray = []
   previousLettersArray.push(dragged.parentElement.previousElementSibling.innerText)
   console.log('drag', previousLettersArray)
 }
+
+console.log('dragged', dragged)
 
 PubSub.publish('Tile:letter-placed', dragged.innerHTML)
 PubSub.publish('Tile:letter-row-index', dragged.offsetParent.parentNode.rowIndex)
