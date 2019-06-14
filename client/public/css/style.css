@@ -66,7 +66,7 @@
     flex-direction: row;
 }
 
-#dragable_letter {
+#dragable_letter, #dragable_letter_fixed {
     border: 3px solid grey;
     border-radius: 5px;
     width: 43px;
@@ -74,6 +74,6 @@
     padding-bottom: 5px;
     padding-top: 5px;
     margin-bottom: 0;
-    margin-left: 1px;
     background-color: ivory;
 }
+
