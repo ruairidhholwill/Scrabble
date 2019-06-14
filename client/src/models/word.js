@@ -82,7 +82,7 @@ Word.prototype.checkForMorePreviousLetters = function(cell){
         console.log(this.previousLettersArray)
         const newCell = cell.previousElementSibling;
         this.checkForMorePreviousLetters(newCell)
-    } 
+    }
 }
 
 Word.prototype.wordToString = function() {
@@ -94,7 +94,9 @@ Word.prototype.wordToString = function() {
         })
     } 
 
-    console.log(this.wordArray)
+    this.word = this.wordArray.join('').toLowerCase()
+
+    console.log(this.word)
     // if (word is true){
     //     publish word to scoreboard
     // } else {
