@@ -11,6 +11,7 @@ const Word = function(url){
     this.rowIndexArray = []
     this.wordObj = {}
     this.wordArray = []
+    this.word = ''
     this.previousLettersArrayHorizontal = []
     this.previousCellIndexHorizontal = []
     this.previousLettersArrayVertical = []
@@ -32,7 +33,10 @@ Word.prototype.bindEvents = function(){
 
     PubSub.subscribe('Tile:letter-cell-index', (event)=>{
         this.cellIndexArray.push(event.detail)
-        if ((this.rowIndexArray.every( index => index === (this.rowIndexArray[0])) && (this.rowIndexArray.length !==  1)) || ((this.previousLettersArrayHorizontal.length >= 1) || (this.nextLettersArrayHorizontal.length >= 1))){
+        if ((this.rowIndexArray.every( index => index === (this.rowIndexArray[0])) && (this.rowIndexArray.length !==  1)) && ((this.previousLettersArrayHorizontal.length == 0) || (this.nextLettersArrayHorizontal.length == 0))){
+            this.wordObj = {}
+            this.createHorizontalWordObject()
+        } else if ((this.previousLettersArrayHorizontal.length >= 1) || (this.nextLettersArrayHorizontal.length >= 1)){
             this.createHorizontalWordObject()
         } else {
             this.createVerticalWordObject()
