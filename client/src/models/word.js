@@ -194,27 +194,23 @@ Word.prototype.wordToString = function() {
     this.wordsArray = []
     this.wordsArray.push(this.HorWord)
     this.wordsArray.push(this.VerWord)
-    // if (this.HorWord !== '' && this.VerWord !== ''){
-    //     this.wordsArray.push(this.HorWord)
-    //     this.wordsArray.push(this.VerWord)
-    // } else if (this.HorWord !== ''){
-    //     this.wordsArray.push(this.HorWord)
-    // } else if (this.VerWord !== ''){
-    //     this.wordsArray.push(this.VerWord)
-    // }
+
+    this.checkWord(this.wordsArray)
 
     console.log('hor', this.HorWord);
     console.log('ver', this.VerWord);
     console.log('WORDS', this.wordsArray)
 }
 
-Word.prototype.checkWord = function(word){
-
-    const wordToCheck = {word: word}
-    this.request.post(wordToCheck)
+Word.prototype.checkWord = function(wordArray){
+    wordArray.forEach((word)=>{
+        let wordToCheck = {word: word}
+        this.request.post(wordToCheck)
         .then( (outcome) => {
             console.log("Hello", outcome);
         })
+    })
+    
 }
 
 module.exports = Word;

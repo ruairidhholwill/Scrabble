@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const wordUrl = 'http://localhost:3000/api/scrabblewords';
     const word = new Word(wordUrl);
     word.bindEvents();
-    word.checkWord();
+    // word.checkWord();
     // word.getWords();
 })
 
