@@ -11,7 +11,6 @@ const Word = function(url){
     this.rowIndexArray = []
     this.wordObjHorizontal = {}
     this.wordObjVertical = {}
-    this.wordsArray = []
     this.word = ''
     this.previousLettersArrayHorizontal = []
     this.previousCellIndexHorizontal = []
@@ -54,7 +53,6 @@ Word.prototype.bindEvents = function(){
             // this.wordObjVertical = {}
             this.createHorizontalWordObject()
         } else if ((this.cellIndexArray.every( index => index === (this.cellIndexArray[0])) &&   (this.cellIndexArray.length !==  1)) && ((this.previousLettersArrayVertical.length == 0) && (this.nextLettersArrayVertical.length == 0))){
-            // this.wordObjHorizontal = {}
             this.wordObjVertical = {}
             this.createVerticalWordObject()
          } else if (((this.previousLettersArrayHorizontal.length >= 1) || (this.nextLettersArrayHorizontal.length >= 1)) && (this.previousLettersArrayVertical.length == 0 && this.nextLettersArrayVertical.length == 0)) {
@@ -193,7 +191,9 @@ Word.prototype.wordToString = function() {
     this.HorWord = Object.values(this.wordObjHorizontal).join('').toLowerCase()
     this.VerWord = Object.values(this.wordObjVertical).join('').toLowerCase()
    
-
+    this.wordsArray = []
+    this.wordsArray.push(this.HorWord)
+    this.wordsArray.push(this.VerWord)
     // if (this.HorWord !== '' && this.VerWord !== ''){
     //     this.wordsArray.push(this.HorWord)
     //     this.wordsArray.push(this.VerWord)
@@ -205,7 +205,7 @@ Word.prototype.wordToString = function() {
 
     console.log('hor', this.HorWord);
     console.log('ver', this.VerWord);
-    // console.log('WORDS', this.wordsArray)
+    console.log('WORDS', this.wordsArray)
 }
 
 Word.prototype.checkWord = function(word){
