@@ -70,13 +70,10 @@ document.addEventListener("drop", function(event) {
     event.target.appendChild( this.dragged );
 }
 
-
-console.log('dragged', this.dragged)
-
-PubSub.publish('Tile:dragged-detail', this.dragged)
 PubSub.publish('Tile:letter-placed', this.dragged.innerHTML)
 PubSub.publish('Tile:letter-row-index', this.dragged.offsetParent.parentNode.rowIndex)
 PubSub.publish('Tile:letter-cell-index', this.dragged.offsetParent.cellIndex)
+PubSub.publish('Tile:dragged-detail', this.dragged)
 })
 
 }

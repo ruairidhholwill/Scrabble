@@ -9,8 +9,9 @@ const Word = function(url){
     this.letterArray = []
     this.cellIndexArray = []
     this.rowIndexArray = []
-    this.wordObj = {}
-    this.wordArray = []
+    this.wordObjHorizontal = {}
+    this.wordObjVertical = {}
+    this.wordsArray = []
     this.word = ''
     this.previousLettersArrayHorizontal = []
     this.previousCellIndexHorizontal = []
@@ -27,6 +28,14 @@ Word.prototype.bindEvents = function(){
         this.letterArray.push(event.detail)
     })
 
+    PubSub.subscribe('Tile:letter-row-index', (event)=>{
+        this.rowIndexArray.push(event.detail)
+    })
+
+    PubSub.subscribe('Tile:letter-cell-index', (event)=>{
+        this.cellIndexArray.push(event.detail)
+    })
+
     PubSub.subscribe('Tile:dragged-detail', (dragged)=>{
         const indexOfCell = dragged.detail.offsetParent.cellIndex
         
@@ -36,21 +45,19 @@ Word.prototype.bindEvents = function(){
             this.checkIfAnyLettersAfterWordHorizontal(dragged.detail)
         } else if ((dragged.detail.offsetParent.parentNode.previousElementSibling.cells[indexOfCell].childElementCount == 1) && (dragged.detail.offsetParent.parentNode.previousElementSibling.cells[indexOfCell].firstElementChild.id === "dragable_letter_fixed")){
             this.checkIfAnyPreviousLettersVertical(dragged.detail, indexOfCell)
-        } else if (dragged.detail.offsetParent.parentNode.nextElementSibling.cells[indexOfCell]){
+        } else if (dragged.detail.offsetParent.parentNode.nextElementSibling.cells[indexOfCell].childElementCount ==1){
             this.checkIfAnyLettersAfterWordVertical(dragged.detail, indexOfCell)
         }
-    })
 
-    PubSub.subscribe('Tile:letter-row-index', (event)=>{
-        this.rowIndexArray.push(event.detail)
-    })
-
-    PubSub.subscribe('Tile:letter-cell-index', (event)=>{
-        this.cellIndexArray.push(event.detail)
         if ((this.rowIndexArray.every( index => index === (this.rowIndexArray[0])) && (this.rowIndexArray.length !==  1)) && ((this.previousLettersArrayHorizontal.length == 0) && (this.nextLettersArrayHorizontal.length == 0))){
-            this.wordObj = {}
+            this.wordObjHorizontal = {}
+            // this.wordObjVertical = {}
             this.createHorizontalWordObject()
-        } else if ((this.previousLettersArrayHorizontal.length >= 1) || (this.nextLettersArrayHorizontal.length >= 1)){
+        } else if ((this.cellIndexArray.every( index => index === (this.cellIndexArray[0])) &&   (this.cellIndexArray.length !==  1)) && ((this.previousLettersArrayVertical.length == 0) && (this.nextLettersArrayVertical.length == 0))){
+            // this.wordObjHorizontal = {}
+            this.wordObjVertical = {}
+            this.createVerticalWordObject()
+         } else if (((this.previousLettersArrayHorizontal.length >= 1) || (this.nextLettersArrayHorizontal.length >= 1)) && (this.previousLettersArrayVertical.length == 0 && this.nextLettersArrayVertical.length == 0)) {
             this.createHorizontalWordObject()
         } else {
             this.createVerticalWordObject()
@@ -60,24 +67,16 @@ Word.prototype.bindEvents = function(){
 }
 
 Word.prototype.createHorizontalWordObject = function(){
+
     for (var i = 0; i < this.cellIndexArray.length; i++)
-    this.wordObj[this.cellIndexArray[i]] = this.letterArray[i];
+    this.wordObjHorizontal[this.cellIndexArray[i]] = this.letterArray[i];
     this.wordToString()
 }
 
 Word.prototype.createVerticalWordObject = function(){
     for (var i = 0; i < this.rowIndexArray.length; i++)
-    this.wordObj[this.rowIndexArray[i]] = this.letterArray[i];
+    this.wordObjVertical[this.rowIndexArray[i]] = this.letterArray[i];
     this.wordToString()
-}
-
-Word.prototype.checkWord = function(word){
-
-    const wordToCheck = {word: word}
-    this.request.post(wordToCheck)
-        .then( (outcome) => {
-            console.log("Hello", outcome);
-        })
 }
 
 Word.prototype.checkIfAnyPreviousLettersHorizontal = function(dragged){
@@ -90,7 +89,7 @@ Word.prototype.checkIfAnyPreviousLettersHorizontal = function(dragged){
         }
     }
     for (var i = 0; i < this.previousCellIndexHorizontal.length; i++)
-    this.wordObj[this.previousCellIndexHorizontal[i]] = this.previousLettersArrayHorizontal[i];
+    this.wordObjHorizontal[this.previousCellIndexHorizontal[i]] = this.previousLettersArrayHorizontal[i];
 }
 
 Word.prototype.checkForMorePreviousLettersHorizontal = function(cell){
@@ -103,7 +102,7 @@ Word.prototype.checkForMorePreviousLettersHorizontal = function(cell){
         }
     }
     for (var i = 0; i < this.previousCellIndexHorizontal.length; i++)
-    this.wordObj[this.previousCellIndexHorizontal[i]] = this.previousLettersArrayHorizontal[i];
+    this.wordObjHorizontal[this.previousCellIndexHorizontal[i]] = this.previousLettersArrayHorizontal[i];
 }
 
 Word.prototype.checkIfAnyPreviousLettersVertical = function(dragged, index){
@@ -117,7 +116,7 @@ Word.prototype.checkIfAnyPreviousLettersVertical = function(dragged, index){
         }
     } 
     for (var i = 0; i < this.previousCellIndexVertical.length; i++)
-    this.wordObj[this.previousCellIndexVertical[i]] = this.previousLettersArrayVertical[i];
+    this.wordObjVertical[this.previousCellIndexVertical[i]] = this.previousLettersArrayVertical[i];
 }
 
 Word.prototype.checkForMorePreviousLettersVertical = function(cell, index){
@@ -131,7 +130,7 @@ Word.prototype.checkForMorePreviousLettersVertical = function(cell, index){
         }
     }
     for (var i = 0; i < this.previousCellIndexVertical.length; i++)
-    this.wordObj[this.previousCellIndexVertical[i]] = this.previousLettersArrayVertical[i];
+    this.wordObjVertical[this.previousCellIndexVertical[i]] = this.previousLettersArrayVertical[i];
 }
 
 Word.prototype.checkIfAnyLettersAfterWordHorizontal = function(dragged){
@@ -144,7 +143,7 @@ Word.prototype.checkIfAnyLettersAfterWordHorizontal = function(dragged){
         }
     }  
     for (var i = 0; i < this.nextCellIndex.length; i++)
-    this.wordObj[this.nextCellIndex[i]] = this.nextLettersArrayHorizontal[i];     
+    this.wordObjHorizontal[this.nextCellIndex[i]] = this.nextLettersArrayHorizontal[i];     
 }
 
 Word.prototype.checkForMoreFollowingLettersHorizontal = function(cell){
@@ -157,7 +156,7 @@ Word.prototype.checkForMoreFollowingLettersHorizontal = function(cell){
         }
     }
     for (var i = 0; i < this.nextCellIndex.length; i++)
-    this.wordObj[this.nextCellIndex[i]] = this.nextLettersArrayHorizontal[i];
+    this.wordObjHorizontal[this.nextCellIndex[i]] = this.nextLettersArrayHorizontal[i];
 }
 
 Word.prototype.checkIfAnyLettersAfterWordVertical = function(dragged, index){
@@ -171,7 +170,7 @@ Word.prototype.checkIfAnyLettersAfterWordVertical = function(dragged, index){
         }
     } 
     for (var i = 0; i < this.nextCellIndexVertical.length; i++)
-    this.wordObj[this.nextCellIndexVertical[i]] = this.nextLettersArrayVertical[i];
+    this.wordObjVertical[this.nextCellIndexVertical[i]] = this.nextLettersArrayVertical[i];
 }
 
 Word.prototype.checkForMoreFollowingLettersVertical = function(cell, index){
@@ -185,21 +184,37 @@ Word.prototype.checkForMoreFollowingLettersVertical = function(cell, index){
         }
     }
     for (var i = 0; i < this.nextCellIndexVertical.length; i++)
-    this.wordObj[this.nextCellIndexVertical[i]] = this.nextLettersArrayVertical[i];
+    this.wordObjVertical[this.nextCellIndexVertical[i]] = this.nextLettersArrayVertical[i];
 }
 
 Word.prototype.wordToString = function() {
-    this.wordArray = Object.values(this.wordObj)
-    this.word = this.wordArray.join('').toLowerCase()
+    this.HorWord = ''
+    this.VerWord = ''
+    this.HorWord = Object.values(this.wordObjHorizontal).join('').toLowerCase()
+    this.VerWord = Object.values(this.wordObjVertical).join('').toLowerCase()
+   
 
-    console.log(this.word)
-    this.checkWord(this.word)
-
-    // if (word is true){
-    //     publish word to scoreboard
-    // } else {
-    //     reset tiles
+    // if (this.HorWord !== '' && this.VerWord !== ''){
+    //     this.wordsArray.push(this.HorWord)
+    //     this.wordsArray.push(this.VerWord)
+    // } else if (this.HorWord !== ''){
+    //     this.wordsArray.push(this.HorWord)
+    // } else if (this.VerWord !== ''){
+    //     this.wordsArray.push(this.VerWord)
     // }
+
+    console.log('hor', this.HorWord);
+    console.log('ver', this.VerWord);
+    // console.log('WORDS', this.wordsArray)
+}
+
+Word.prototype.checkWord = function(word){
+
+    const wordToCheck = {word: word}
+    this.request.post(wordToCheck)
+        .then( (outcome) => {
+            console.log("Hello", outcome);
+        })
 }
 
 module.exports = Word;
