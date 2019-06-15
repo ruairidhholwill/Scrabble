@@ -71,11 +71,9 @@ Word.prototype.createVerticalWordObject = function(){
     this.wordToString()
 }
 
-const word = "hello";
+Word.prototype.checkWord = function(word){
 
-const wordToCheck = {word: word}
-
-Word.prototype.checkWord = function(){
+    const wordToCheck = {word: word}
     this.request.post(wordToCheck)
         .then( (outcome) => {
             console.log("Hello", outcome);
@@ -195,6 +193,8 @@ Word.prototype.wordToString = function() {
     this.word = this.wordArray.join('').toLowerCase()
 
     console.log(this.word)
+    this.checkWord(this.word)
+
     // if (word is true){
     //     publish word to scoreboard
     // } else {
