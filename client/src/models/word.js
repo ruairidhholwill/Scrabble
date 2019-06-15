@@ -27,22 +27,6 @@ Word.prototype.bindEvents = function(){
         this.letterArray.push(event.detail)
     })
 
-    PubSub.subscribe('Tile:letter-row-index', (event)=>{
-        this.rowIndexArray.push(event.detail)
-    })
-
-    PubSub.subscribe('Tile:letter-cell-index', (event)=>{
-        this.cellIndexArray.push(event.detail)
-        if ((this.rowIndexArray.every( index => index === (this.rowIndexArray[0])) && (this.rowIndexArray.length !==  1)) && ((this.previousLettersArrayHorizontal.length == 0) || (this.nextLettersArrayHorizontal.length == 0))){
-            this.wordObj = {}
-            this.createHorizontalWordObject()
-        } else if ((this.previousLettersArrayHorizontal.length >= 1) || (this.nextLettersArrayHorizontal.length >= 1)){
-            this.createHorizontalWordObject()
-        } else {
-            this.createVerticalWordObject()
-        }
-    })
-
     PubSub.subscribe('Tile:dragged-detail', (dragged)=>{
         const indexOfCell = dragged.detail.offsetParent.cellIndex
         
@@ -54,6 +38,22 @@ Word.prototype.bindEvents = function(){
             this.checkIfAnyPreviousLettersVertical(dragged.detail, indexOfCell)
         } else if (dragged.detail.offsetParent.parentNode.nextElementSibling.cells[indexOfCell]){
             this.checkIfAnyLettersAfterWordVertical(dragged.detail, indexOfCell)
+        }
+    })
+
+    PubSub.subscribe('Tile:letter-row-index', (event)=>{
+        this.rowIndexArray.push(event.detail)
+    })
+
+    PubSub.subscribe('Tile:letter-cell-index', (event)=>{
+        this.cellIndexArray.push(event.detail)
+        if ((this.rowIndexArray.every( index => index === (this.rowIndexArray[0])) && (this.rowIndexArray.length !==  1)) && ((this.previousLettersArrayHorizontal.length == 0) && (this.nextLettersArrayHorizontal.length == 0))){
+            this.wordObj = {}
+            this.createHorizontalWordObject()
+        } else if ((this.previousLettersArrayHorizontal.length >= 1) || (this.nextLettersArrayHorizontal.length >= 1)){
+            this.createHorizontalWordObject()
+        } else {
+            this.createVerticalWordObject()
         }
     })
 
