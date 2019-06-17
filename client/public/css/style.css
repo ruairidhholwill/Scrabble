@@ -10,7 +10,12 @@
     border: solid 5px black;
 }
 
+<<<<<<< HEAD
 #tile_table, #score_board {
+=======
+#tile_table {
+    margin-top: 20px;
+>>>>>>> c8bdfb070658e09fced17cff74bb4220c0c229f6
     margin-left: auto;
     margin-right: auto;
     table-layout: fixed;
@@ -77,7 +82,7 @@
     flex-direction: row;
 }
 
-#dragable_letter {
+#dragable_letter, #dragable_letter_fixed {
     border: 3px solid grey;
     border-radius: 5px;
     width: 43px;
@@ -85,7 +90,6 @@
     padding-bottom: 5px;
     padding-top: 5px;
     margin-bottom: 0;
-    margin-left: 1px;
     background-color: ivory;
     text-transform: capitalize;
 }
