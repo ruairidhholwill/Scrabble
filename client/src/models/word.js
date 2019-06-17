@@ -48,19 +48,30 @@ Word.prototype.bindEvents = function(){
             this.checkIfLettersBelow(rowBelow, indexOfCell)
         }
 
-        if ((this.rowIndexArray.every( index => index === (this.rowIndexArray[0])) && (this.rowIndexArray.length !== 1)) && (this.fixedHorizontalLetters.length == 0)){
+        if (this.areLettersOnOneRow() && this.fixedHorizontalLetters.length == 0){
             this.wordObjHorizontal = {}
             this.createHorizontalWordObject()
-        } else if ((this.cellIndexArray.every( index => index === (this.cellIndexArray[0])) &&   (this.cellIndexArray.length !==  1)) && (this.fixedVerticalLetters.length == 0)){
+        } else if (this.areLettersOnMultipleRows() && this.fixedVerticalLetters.length == 0){
             this.wordObjVertical = {}
             this.createVerticalWordObject()
-        } else if ((this.fixedHorizontalLetters.length >= 1) && (this.fixedVerticalLetters.length == 0)) {
+        } else if (this.fixedHorizontalLetters.length >= 1 && this.fixedVerticalLetters.length == 0) {
             this.createHorizontalWordObject()
-        } else if ((this.fixedHorizontalLetters.length == 0) && (this.fixedVerticalLetters.length >= 1)){
+        } else if (this.fixedHorizontalLetters.length == 0 && this.fixedVerticalLetters.length >= 1){
             this.createVerticalWordObject()
         }
     })
+}
 
+Word.prototype.areLettersOnOneRow = function(){
+    if (this.rowIndexArray.every( index => index === (this.rowIndexArray[0])) && this.rowIndexArray.length !== 1){
+        return true
+    }
+}
+
+Word.prototype.areLettersOnMultipleRows = function(){
+    if (this.cellIndexArray.every( index => index === (this.cellIndexArray[0])) && this.cellIndexArray.length !==  1){
+        return true
+    }
 }
 
 Word.prototype.checkIfLettersToLeft = function(cell){
