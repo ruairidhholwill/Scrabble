@@ -12,18 +12,18 @@ const Word = function(url){
     
     this.wordObjHorizontal = {}
     this.wordObjVertical = {}
-    // this.word = ''
-    this.previousLettersArrayHorizontal = []
-    this.previousCellIndexHorizontal = []
+    
+    this.fixedHorizontalLetters = []
+    this.fixedHorizontalCells = []
 
-    this.previousLettersArrayVertical = []
-    this.previousCellIndexVertical = []
+    this.fixedVerticalLetters = []
+    this.fixedVerticalCells = []
 
-    this.nextLettersArrayHorizontal = []
-    this.nextCellIndex = []
+    // this.nextLettersArrayHorizontal = []
+    // this.nextCellIndex = []
 
-    this.nextLettersArrayVertical = []
-    this.nextCellIndexVertical = []
+    // this.nextLettersArrayVertical = []
+    // this.nextCellIndexVertical = []
 }
 
 Word.prototype.bindEvents = function(){
@@ -56,14 +56,13 @@ Word.prototype.bindEvents = function(){
             this.checkIfAnyLettersAfterWordVertical(dragged.detail, indexOfCell)
         }
 
-        if ((this.rowIndexArray.every( index => index === (this.rowIndexArray[0])) && (this.rowIndexArray.length !==  1)) && ((this.previousLettersArrayHorizontal.length == 0) && (this.nextLettersArrayHorizontal.length == 0))){
+        if ((this.rowIndexArray.every( index => index === (this.rowIndexArray[0])) && (this.rowIndexArray.length !==  1)) && (this.fixedHorizontalLetters.length == 0)){
             this.wordObjHorizontal = {}
-            // this.wordObjVertical = {}
             this.createHorizontalWordObject()
-        } else if ((this.cellIndexArray.every( index => index === (this.cellIndexArray[0])) &&   (this.cellIndexArray.length !==  1)) && ((this.previousLettersArrayVertical.length == 0) && (this.nextLettersArrayVertical.length == 0))){
+        } else if ((this.cellIndexArray.every( index => index === (this.cellIndexArray[0])) &&   (this.cellIndexArray.length !==  1)) && (this.fixedVerticalLetters.length == 0)){
             this.wordObjVertical = {}
             this.createVerticalWordObject()
-         } else if (((this.previousLettersArrayHorizontal.length >= 1) || (this.nextLettersArrayHorizontal.length >= 1)) && (this.previousLettersArrayVertical.length == 0 && this.nextLettersArrayVertical.length == 0)) {
+         } else if ((this.fixedHorizontalLetters.length >= 1) && (this.fixedVerticalLetters.length == 0)) {
             this.createHorizontalWordObject()
         } else {
             this.createVerticalWordObject()
@@ -86,29 +85,32 @@ Word.prototype.createVerticalWordObject = function(){
 }
 
 Word.prototype.checkIfAnyPreviousLettersHorizontal = function(dragged){
-    if (dragged.offsetParent.previousElementSibling.firstElementChild.id === "dragable_letter_fixed") {
-        this.previousLettersArrayHorizontal.push(dragged.parentElement.previousElementSibling.innerText)
-        this.previousCellIndexHorizontal.push(dragged.offsetParent.previousElementSibling.cellIndex)
+    const cellToLeft = dragged.offsetParent.previousElementSibling
+
+    if (cellToLeft.firstElementChild.id === "dragable_letter_fixed") {
+        this.fixedHorizontalLetters.push(cellToLeft.innerText)
+        this.fixedHorizontalCells.push(cellToLeft.cellIndex)
+
         const newElement = dragged.offsetParent.previousElementSibling.previousElementSibling
         if (newElement.childElementCount == 1){
         this.checkForMorePreviousLettersHorizontal(newElement)
         }
     }
-    for (var i = 0; i < this.previousCellIndexHorizontal.length; i++)
-    this.wordObjHorizontal[this.previousCellIndexHorizontal[i]] = this.previousLettersArrayHorizontal[i];
+    for (var i = 0; i < this.fixedHorizontalCells.length; i++)
+    this.wordObjHorizontal[this.fixedHorizontalCells[i]] = this.fixedHorizontalLetters[i];
 }
 
 Word.prototype.checkForMorePreviousLettersHorizontal = function(cell){
     if (cell.firstElementChild.id === "dragable_letter_fixed"){
-        this.previousLettersArrayHorizontal.push(cell.firstElementChild.innerText)
-        this.previousCellIndexHorizontal.push(cell.cellIndex)
+        this.fixedHorizontalLetters.push(cell.firstElementChild.innerText)
+        this.fixedHorizontalCells.push(cell.cellIndex)
         const newCell = cell.previousElementSibling;
         if (newCell.childElementCount == 1){
             this.checkForMorePreviousLettersHorizontal(newCell)
         }
     }
-    for (var i = 0; i < this.previousCellIndexHorizontal.length; i++)
-    this.wordObjHorizontal[this.previousCellIndexHorizontal[i]] = this.previousLettersArrayHorizontal[i];
+    for (var i = 0; i < this.fixedHorizontalCells.length; i++)
+    this.wordObjHorizontal[this.fixedHorizontalCells[i]] = this.fixedHorizontalLetters[i];
 }
 
 Word.prototype.checkIfAnyPreviousLettersVertical = function(dragged, index){
