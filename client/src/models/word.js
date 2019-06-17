@@ -1,8 +1,6 @@
 const RequestHelper = require('../helpers/request_helper.js');
 const PubSub = require('../helpers/pub_sub.js')
 
-
-
 const Word = function(url){
     this.url = url;
     this.request = new RequestHelper(this.url);
@@ -42,7 +40,7 @@ Word.prototype.bindEvents = function(){
         
         if ((cellToLeft.childElementCount == 1) && (cellToLeft.firstElementChild.id === "dragable_letter_fixed")){
             this.checkIfLettersToLeft(cellToLeft)
-        } else if (cellToRight.childElementCount == 1){
+        } else if ((cellToRight.childElementCount == 1) && (cellToRight.firstElementChild.id === "dragable_letter_fixed")){
             this.checkIfLettersToRight(cellToRight)
         } else if ((rowAbove.cells[indexOfCell].childElementCount == 1) && (rowAbove.cells[indexOfCell].firstElementChild.id === "dragable_letter_fixed")){
             this.checkIfLettersAbove(rowAbove, indexOfCell)
