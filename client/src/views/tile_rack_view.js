@@ -36,11 +36,14 @@ TileRacKView.prototype.populateTileRack = function(tiles){
     const cellsArray = tileRack.rows[0].cells;
     const newTiles = [];
     for (let i = 0; i < 7; i++) {
-        const tile = document.createElement('h2');
+        const tile = document.createElement('div');
         tile.textContent = tiles[i].letter;
         tile.id = 'dragable_letter';
         tile.draggable = true;
         cellsArray[i].appendChild(tile);
+        // const score = document.createElement('p');
+        // tile.textContent = tiles[i].score;
+        // tile.appendChild(score);
     }
     for (let i = 7; i < tiles.length; i++) {
         newTiles.push(tiles[i]);
