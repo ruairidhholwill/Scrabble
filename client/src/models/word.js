@@ -40,15 +40,19 @@ Word.prototype.bindEvents = function(){
     })
 
     PubSub.subscribe('Tile:dragged-detail', (dragged)=>{
+        const cellToLeft = dragged.detail.offsetParent.previousElementSibling
+        const cellToRight = dragged.detail.offsetParent.nextElementSibling
+        const cellAbove = dragged.detail.offsetParent.parentNode.previousElementSibling
+        const cellBelow = dragged.detail.offsetParent.parentNode.nextElementSibling
         const indexOfCell = dragged.detail.offsetParent.cellIndex
         
-        if ((dragged.detail.offsetParent.previousElementSibling.childElementCount == 1) && (dragged.detail.offsetParent.previousElementSibling.firstElementChild.id === "dragable_letter_fixed")){
+        if ((cellToLeft.childElementCount == 1) && (cellToLeft.firstElementChild.id === "dragable_letter_fixed")){
             this.checkIfAnyPreviousLettersHorizontal(dragged.detail)
-        } else if (dragged.detail.offsetParent.nextElementSibling.childElementCount == 1){
+        } else if (cellToRight.childElementCount == 1){
             this.checkIfAnyLettersAfterWordHorizontal(dragged.detail)
-        } else if ((dragged.detail.offsetParent.parentNode.previousElementSibling.cells[indexOfCell].childElementCount == 1) && (dragged.detail.offsetParent.parentNode.previousElementSibling.cells[indexOfCell].firstElementChild.id === "dragable_letter_fixed")){
+        } else if ((cellAbove.cells[indexOfCell].childElementCount == 1) && (cellAbove.cells[indexOfCell].firstElementChild.id === "dragable_letter_fixed")){
             this.checkIfAnyPreviousLettersVertical(dragged.detail, indexOfCell)
-        } else if (dragged.detail.offsetParent.parentNode.nextElementSibling.cells[indexOfCell].childElementCount ==1){
+        } else if (cellBelow.cells[indexOfCell].childElementCount == 1){
             this.checkIfAnyLettersAfterWordVertical(dragged.detail, indexOfCell)
         }
 
