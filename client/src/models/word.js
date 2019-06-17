@@ -9,15 +9,19 @@ const Word = function(url){
     this.letterArray = []
     this.cellIndexArray = []
     this.rowIndexArray = []
+    
     this.wordObjHorizontal = {}
     this.wordObjVertical = {}
-    this.word = ''
+    // this.word = ''
     this.previousLettersArrayHorizontal = []
     this.previousCellIndexHorizontal = []
+
     this.previousLettersArrayVertical = []
     this.previousCellIndexVertical = []
+
     this.nextLettersArrayHorizontal = []
     this.nextCellIndex = []
+
     this.nextLettersArrayVertical = []
     this.nextCellIndexVertical = []
 }
