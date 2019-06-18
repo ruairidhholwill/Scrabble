@@ -8,6 +8,7 @@ const StartGame = require('./models/start_game.js')
 const PlayerOptionsView = require('./views/player_options_view.js')
 const TurnView = require('./views/turn_view.js');
 const ScoreBoardView = require('./views/scoreboard_view.js');
+const Score = require('./models/score.js');
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -17,6 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const turnView = new TurnView();
     turnView.bindEvents();
+
+    const score = new Score();
+    score.bindEvents();
 
     const dragElement = document.getElementById("#dragable_letter")
     const tile = new Tile(dragElement)

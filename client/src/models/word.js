@@ -212,6 +212,7 @@ Word.prototype.checkWord = function(wordArray){
         this.request.post(wordToCheck)
         .then( (outcome) => {
             console.log("Hello", outcome);
+            PubSub.publish('Word:check-word', outcome)
         })
     })
     

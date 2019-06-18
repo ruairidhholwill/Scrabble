@@ -10,12 +10,8 @@
     border: solid 5px black;
 }
 
-<<<<<<< HEAD
-#tile_table, #score_board {
-=======
 #tile_table {
     margin-top: 20px;
->>>>>>> c8bdfb070658e09fced17cff74bb4220c0c229f6
     margin-left: auto;
     margin-right: auto;
     table-layout: fixed;
