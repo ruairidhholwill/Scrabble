@@ -6,8 +6,17 @@ const TileRackView = require('./views/tile_rack_view.js');
 const Board = require('./models/board.js')
 const StartGame = require('./models/start_game.js')
 const PlayerOptionsView = require('./views/player_options_view.js')
+const TurnView = require('./views/turn_view.js');
+const ScoreBoardView = require('./views/scoreboard_view.js');
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    const scoreBoard = document.querySelector('#score_board');
+    const scoreBoardView = new ScoreBoardView(scoreBoard);
+    scoreBoardView.bindEvents();
+
+    const turnView = new TurnView();
+    turnView.bindEvents();
 
     const dragElement = document.getElementById("#dragable_letter")
     const tile = new Tile(dragElement)
