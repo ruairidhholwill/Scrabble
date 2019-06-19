@@ -52,20 +52,20 @@ document.addEventListener("drop", function(event) {
 
   if (event.target.className == "triple") {
     event.target.innerHTML = ''
-
     event.target.appendChild( this.dragged );
+    
   } else if (event.target.className == "double") {
     event.target.innerHTML = ''
-
     event.target.appendChild( this.dragged );
+
   } else if (event.target.className == "triple_letter") {
     event.target.innerHTML = ''
-
     event.target.appendChild( this.dragged );
+
   } else if (event.target.className == "double_letter") {
     event.target.innerHTML = ''
-  
     event.target.appendChild( this.dragged );
+
   } else if (event.target.className == "tile") {
     event.target.appendChild( this.dragged );
 }
